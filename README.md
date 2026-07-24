@@ -15,8 +15,10 @@ against the current state of the [MiKode engineering standards](https://github.c
   repository and the standards.
 - **adr-new** — create a new Architecture Decision Record in the engineering
   repository with correct numbering, template, statuses, and index updates.
-- **wiki-check** — stub; becomes a documentation-usage checker once the wiki
-  conventions are defined.
+- **standards-check** — lint a MiKode repository against the current standards as a
+  final gate: undocumented deviations (a changed Node version, a swapped package
+  manager) fail until they are reverted, covered by a documented exception, or
+  proposed as an ADR.
 
 ## Installation
 
