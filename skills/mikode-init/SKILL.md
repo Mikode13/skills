@@ -32,23 +32,35 @@ user which applied standards are still drafts.
 
 ## 2. Gather project facts
 
-Ask the user (do not guess):
+Ask the user in this order (do not guess):
 
-- Repository name and one-line description.
-- Visibility (public or private).
-- Project type: Node library, browser library, React library, or config package.
-- Licensor name and confirmation that the MiKode source-available license applies, or
-  which exception license to use instead.
+1. Project type: Node library, browser library, React library, or config package.
+2. Project/package name: ask for a short kebab-case name, without a GitHub owner or
+   npm scope. Use the answer consistently:
+   - GitHub repository: `mikode13/<project-name>`.
+   - `package.json` name: `@mikode13/<project-name>` by default. If the user provides a
+     different valid package name or the project is not intended to be published, use
+     that exact choice instead.
+   - Never silently substitute `mikode` for the user's project name or for the
+     `mikode13` GitHub owner.
+3. Project goal and brief description: ask, "What do you plan to build?" Capture a
+   concise one- or two-sentence description and use it for both
+   `package.json.description` and the initial README description.
+4. Visibility (public or private).
+5. Licensor name and confirmation that the MiKode source-available license applies, or
+   which exception license to use instead.
 
 ## 3. Create and scaffold
 
-1. `gh repo create mikode13/<name>` with the chosen visibility, clone it locally.
+1. `gh repo create mikode13/<project-name>` with the chosen visibility, clone it
+   locally.
 2. Scaffold, taking every concrete value (versions, ranges, options) from the
    standards documents read in step 1:
    - `LICENSE` — completed from `templates/LICENSE.template`, all placeholders
      replaced; run the validation checklist in `standards/licensing.md`.
-   - `package.json` — name, description, `"type": "module"`, pinned `packageManager`,
-     `engines`, the `preinstall` package-manager guard, and the standard scripts
+   - `package.json` — the collected package name and brief description,
+     `"type": "module"`, pinned `packageManager`, `engines`, the `preinstall`
+     package-manager guard, and the standard scripts
      (format, lint, typecheck/build, test placeholder).
    - `.nvmrc` — per the Node.js version standard.
    - `pnpm-workspace.yaml` — only if the standards require settings there.
