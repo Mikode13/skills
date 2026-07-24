@@ -1,0 +1,31 @@
+{
+	"name": "mikode-skills",
+	"version": "0.1.0",
+	"description": "Portable MiKode engineering and project-management skills for coding agents.",
+	"author": {
+		"name": "MiKode"
+	},
+	"repository": "https://github.com/mikode13/skills",
+	"license": "MIT with Commons Clause License Condition v1.0",
+	"keywords": [
+		"engineering",
+		"project-management",
+		"architecture-decision-records"
+	],
+	"skills": "./skills/",
+	"interface": {
+		"displayName": "MiKode Skills",
+		"shortDescription": "Portable engineering and project-management workflows.",
+		"longDescription": "Reusable SKILL.md workflows for scaffolding projects, loading engineering context, managing ADRs, and checking standards across Codex, Claude Code, and compatible agents.",
+		"developerName": "MiKode",
+		"category": "Productivity",
+		"capabilities": [
+			"Read",
+			"Write"
+		],
+		"defaultPrompt": [
+			"Use MiKode Skills to scaffold or check a MiKode repository.",
+			"Use MiKode Skills to create, review, or accept an Architecture Decision Record."
+		]
+	}
+}

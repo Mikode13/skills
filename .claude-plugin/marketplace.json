@@ -7,7 +7,7 @@
 		{
 			"name": "mikode-skills",
 			"source": "./",
-			"description": "MiKode team skills for Claude Code: project scaffolding, engineering context, ADR workflow, and documentation checks."
+			"description": "Portable MiKode engineering and project-management skills for coding agents."
 		}
 	]
 }
