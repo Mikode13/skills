@@ -1,0 +1,13 @@
+{
+	"name": "mikode",
+	"owner": {
+		"name": "MiKode"
+	},
+	"plugins": [
+		{
+			"name": "mikode-skills",
+			"source": "./",
+			"description": "MiKode team skills for Claude Code: project scaffolding, engineering context, ADR workflow, and documentation checks."
+		}
+	]
+}
