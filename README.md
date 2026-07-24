@@ -48,14 +48,15 @@ git clone https://github.com/mikode13/skills.git
 ln -s "$(pwd)/skills/"* ~/.claude/skills/
 ```
 
-### Codex CLI
+### Codex CLI and other tools
 
-Codex loads skills from `~/.codex/skills/` (personal) or `.codex/skills/` (project).
-Clone the repository and symlink the skill directories:
+Codex — like Cursor, Gemini CLI, and other tools supporting the universal
+`.agents/skills` layout — loads skills from `~/.agents/skills/` (personal) or
+`.agents/skills/` (project). Clone the repository and symlink the skill directories:
 
 ```sh
 git clone https://github.com/mikode13/skills.git
-ln -s "$(pwd)/skills/"* ~/.codex/skills/
+ln -s "$(pwd)/skills/"* ~/.agents/skills/
 ```
 
 Pull the repository to receive updates. Keep the skill bodies tool-agnostic (plain
