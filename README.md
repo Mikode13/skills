@@ -14,7 +14,10 @@ against the current state of the [MiKode engineering standards](https://github.c
   active standards, accepted and proposed ADRs, and conflicts between the open
   repository and the standards.
 - **adr-new** — create a new Architecture Decision Record in the engineering
-  repository with correct numbering, template, statuses, and index updates.
+  repository through a guided interview: the user provides the reasoning, the agent
+  verifies facts and fills gaps visibly.
+- **adr-accept** — accept a proposed ADR: flip statuses, activate the related
+  standard, update every index, and handle supersession consistently.
 - **standards-check** — lint a MiKode repository against the current standards as a
   final gate: undocumented deviations (a changed Node version, a swapped package
   manager) fail until they are reverted, covered by a documented exception, or
