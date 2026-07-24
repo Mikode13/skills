@@ -27,23 +27,31 @@ other agents that support the skills format.
 There are two distribution paths. Use the plugin when you want the complete bundle;
 link individual skill directories when you want a smaller selection.
 
-### Codex plugin bundle
+### Plugin bundle
 
-This repository now includes Codex’s required `.codex-plugin/plugin.json` and a repo
-marketplace at `.agents/plugins/marketplace.json`. The object with `name`, `version`,
-`description`, and `skills` belongs in `plugin.json`; `marketplace.json` is the catalog
-that exposes that plugin.
+The same bundle installs on both Codex and Claude Code: add the repository as a
+marketplace, then install the `mikode-skills` plugin from it. The steps are identical
+across the two tools — only the CLI binary and the marketplace suffix differ.
 
-Add the repository as a Codex marketplace:
+For **Codex**:
 
 ```sh
 codex plugin marketplace add mikode13/skills
+codex plugin add mikode-skills@mikode-skills
 ```
 
-For the Codex desktop app, restart the app, open the Plugins Directory, select the
-MiKode Skills marketplace, and install the `mikode-skills` plugin. For Codex CLI or
-other tools that load the universal skills directory, use the direct installation
-below.
+For **Claude Code** (these are shell commands; the equivalent in-session slash
+commands are `/plugin marketplace add …` and `/plugin install …`):
+
+```sh
+claude plugin marketplace add mikode13/skills
+claude plugin install mikode-skills@mikode
+```
+
+For the desktop app of either tool, restart the app, open the Plugins Directory,
+select the MiKode Skills marketplace, and install the `mikode-skills` plugin. For the
+CLI or other tools that load the universal skills directory, use the direct
+installation below.
 
 ### Install individual skills directly
 
@@ -75,17 +83,13 @@ This direct-link approach also works with other tools that document support for
 `.agents/skills`. Pull the cloned repository to receive updates without reinstalling
 the links.
 
-### Claude Code plugin bundle
-
-The existing Claude Code marketplace remains available:
-
-```text
-/plugin marketplace add mikode13/skills
-/plugin install mikode-skills@mikode
-```
+### Manifests
 
 The Claude plugin manifest is kept under `.claude-plugin/`; the Codex manifest is kept
-under `.codex-plugin/`. Both point at the same `skills/` directory.
+under `.codex-plugin/`, with the repo marketplace at `.agents/plugins/marketplace.json`.
+The object with `name`, `version`, `description`, and `skills` belongs in each
+`plugin.json`; the `marketplace.json` files are the catalogs that expose the plugin.
+All of them point at the same `skills/` directory.
 
 ## Usage
 
