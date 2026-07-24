@@ -20,7 +20,12 @@ against the current state of the [MiKode engineering standards](https://github.c
 
 ## Installation
 
-This repository is a Claude Code plugin marketplace. In Claude Code:
+The skills use the cross-tool `SKILL.md` format, so the same files work in Claude
+Code, Codex CLI, and other tools that support it.
+
+### Claude Code
+
+This repository is a Claude Code plugin marketplace:
 
 ```text
 /plugin marketplace add mikode13/skills
@@ -37,6 +42,19 @@ directories into your personal skills folder:
 git clone https://github.com/mikode13/skills.git
 ln -s "$(pwd)/skills/"* ~/.claude/skills/
 ```
+
+### Codex CLI
+
+Codex loads skills from `~/.codex/skills/` (personal) or `.codex/skills/` (project).
+Clone the repository and symlink the skill directories:
+
+```sh
+git clone https://github.com/mikode13/skills.git
+ln -s "$(pwd)/skills/"* ~/.codex/skills/
+```
+
+Pull the repository to receive updates. Keep the skill bodies tool-agnostic (plain
+instructions, no tool-specific command names) so they stay portable.
 
 ## Usage
 
