@@ -21,6 +21,12 @@ other agents that support the skills format.
 - **standards-check** — lint a MiKode repository against the current standards as a
   final gate: undocumented deviations fail until they are reverted, covered by a
   documented exception, or proposed as an ADR.
+- **mikode-code-philosophy** — apply the MiKode coding philosophy when
+  implementing or refactoring: strategic design, strong boundaries, explicit
+  behaviour, and meaningful tests over speed or generated-code verbosity.
+- **mikode-code-philosophy-review** — review a change against the MiKode coding
+  philosophy and report prioritized findings (blocker / should fix / suggestion)
+  without inventing problems merely to provide feedback.
 
 ## Installation
 
