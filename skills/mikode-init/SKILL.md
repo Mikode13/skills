@@ -27,19 +27,26 @@ Gather only facts that are not already clear from the request:
 3. visibility and publication/deployment intent when relevant;
 4. effective license when it cannot be derived from the applicable standard.
 
+Use `Mikode13/<project-name>` as the default GitHub repository. For publishable npm
+packages, use `@mikode13/<project-name>` as the default package name. Preserve an explicit
+different owner, repository name, package name, or non-published choice from the user.
+
 For code libraries, applications, services, and configuration packages, default to MiKode's
 current TypeScript, Node.js, and pnpm stack unless the user or a real constraint requires a
 different ecosystem. Do not apply that default to documentation, content, or skill
 repositories that have no runtime.
 
-## 3. Scaffold from applicable standards
+## 3. Create and scaffold from applicable standards
+
+Create the GitHub repository with the resolved owner, name, and visibility, then use it as
+the target for the scaffold.
 
 Check each candidate standard's `Scope` before applying it. Take versions, configuration,
 templates, commands, and exceptions directly from the live standard.
 
 Create the baseline repository artifacts required by the active documentation standard.
-When `AGENTS.md` is created, also create `CLAUDE.md` as a symlink to `AGENTS.md` so both
-agent entry points share one source.
+When `AGENTS.md` is created, also create `CLAUDE.md` as a symlink to `AGENTS.md`; do not
+maintain independent Claude instructions.
 
 Add package management, runtime, TypeScript, linting, testing, build, CI, or publishing
 configuration only when the repository shape and applicable standards justify those
@@ -52,13 +59,15 @@ If an active standard includes the project in scope but its available implementa
 represent the repository cleanly, report the conflict instead of hiding it with artificial
 tooling.
 
-## 4. Document, validate, and report
+## 4. Document, validate, and publish the scaffold
 
 Write repository documentation according to the active MiKode documentation standards;
 do not restate those rules here.
 
 Run every validation command that genuinely belongs to the scaffold and use
 `standards-check` as the final policy audit.
+
+After validation passes, create the initial commit and push it to the GitHub repository.
 
 Report the repository URL, project shape, applicable active standards, validation performed,
 and any unresolved deviation or permitted exception.
