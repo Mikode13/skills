@@ -1,51 +1,31 @@
 # Project decisions
 
-## 2026-08-31 — Keep the skills repository toolchain-free until validation justifies one
+## 2026-08-31 — Keep repository tooling tied to real validation needs
 
 ### Decision
 
-The skills repository will remain a content and distribution repository without a Node.js
-or pnpm project toolchain while its canonical artifacts are Markdown skill definitions and
-small plugin manifests consumed directly by host agents.
+`skills` remains a content-first repository. It will not add a Node.js or pnpm toolchain
+solely to satisfy repository ceremony.
 
-The repository will not add placeholder build, test, type-check, or package scripts solely
-to resemble a source-code project. Automated repository validation may be introduced when
-there are concrete skill or manifest invariants worth enforcing and the validation surface
-can represent those capabilities honestly.
+For CI, `skills` conceptually belongs to the documentation profile. The current blocker is
+that MiKode's documentation CI path is coupled to pnpm-backed project commands. Until that
+profile can validate this repository without manufacturing unused runtime capabilities,
+repository-specific automated CI is deferred.
 
 ### Context
 
-MiKode's documentation, licensing, and repository-ownership rules apply to this repository,
-but the Node.js, TypeScript, code-quality, and testing standards describe capabilities that
-`skills` does not have.
+The canonical artifacts are Markdown skill definitions and small plugin manifests consumed
+directly by host agents. Node.js, TypeScript, build, and test capabilities are not part of
+the product today.
 
-The current continuous-integration standard has organization-wide GitHub scope and assumes
-a central workflow backed by project-owned validation commands. Applying its existing
-documentation profile here would require introducing a Node.js and pnpm toolchain primarily
-for governance rather than for the repository's product.
-
-That mismatch is kept explicit instead of manufacturing commands that always pass. This is
-a project-specific deviation from the current CI standard, not a replacement for the
-cross-project policy.
+This is a project-specific implementation gap, not a claim that documentation CI is the
+wrong profile. If the same constraint appears in another content-only repository, it should
+be handled as a cross-project CI design problem.
 
 ### Consequences
 
-- The repository stays small and its runtime model remains honest: compatible agents
-  consume the skill files directly.
-- Node.js, pnpm, TypeScript, ESLint, Vitest, and build infrastructure are not introduced
-  without a real repository need.
-- The repository does not yet fully satisfy the organization-wide CI standard and relies
-  on pull-request review for repository-specific validation.
-- If another content-only MiKode repository exposes the same mismatch, the CI standard
-  should be revisited through a cross-project ADR rather than accumulating local
-  exceptions.
-- When automated validation becomes justified, the repository should validate real
-  invariants such as skill frontmatter, directory/name consistency, manifest references,
-  and internal documentation links.
-
-### Alternative considered
-
-Adding a Node.js and pnpm documentation toolchain immediately would allow the repository to
-fit the existing central documentation CI profile. It was not selected because the
-repository has no Node.js runtime or package artifact and the toolchain would currently
-exist mainly to satisfy the validation mechanism itself.
+- The repository stays honest about the capabilities it actually owns.
+- Useful future validation can target skill frontmatter, manifest references, and internal
+  links without pretending the repository is an application.
+- The current organization-wide CI requirement remains unresolved for this repository until
+  the documentation profile supports this shape cleanly.

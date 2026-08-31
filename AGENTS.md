@@ -1,90 +1,55 @@
 # AGENTS.md
 
-## Repository purpose
+## Purpose
 
-`Mikode13/skills` distributes portable agent skills. The canonical skill bodies live under
-`skills/` and are consumed directly by compatible agents and plugin manifests.
+`Mikode13/skills` distributes portable agent skills. Canonical skill bodies live under
+`skills/`; plugin manifests expose those same files to supported hosts.
 
-This repository is not a Node.js application or library and does not own a production
-runtime. Do not introduce runtime, build, test, or package capabilities merely to make the
-repository resemble a source-code project.
+This is currently a content repository, not a Node.js application or library. The reasoning
+for that boundary lives in [`docs/decisions.md`](docs/decisions.md).
 
 ## Before making changes
 
-1. Read this file and the root `README.md`.
-2. Read `Mikode13/engineering/standards/README.md` and apply only standards whose stated
-   scope matches this repository or the change being made.
-3. For documentation work, read the active documentation ownership and documentation
-   writing standards.
-4. Read additional standards only when their scope applies to the task. Do not assume that
-   Node.js, TypeScript, package-management, code-quality, or testing standards apply to a
-   repository that does not use those capabilities.
+1. Read the root `README.md`.
+2. Read the applicable **Active** standards from the latest `main` of
+   `Mikode13/engineering`. If using a local checkout, sync it with `origin/main` first.
+3. Read accepted ADRs only when their reasoning is needed to understand an active rule or
+   the requested change.
 
-The engineering repository is the source of truth. Skills MUST NOT duplicate concrete
-standard values that can be read from the current standard at execution time.
+Apply standards by their declared scope. Do not treat an unrelated standard as applicable
+just because it exists.
 
-## Repository structure
+## Skill rules
 
-```text
-skills/
-└── <skill-name>/SKILL.md   Canonical skill bodies
+Each canonical skill MUST live at `skills/<skill-name>/SKILL.md`.
 
-.agents/                   Agent/plugin distribution metadata
-.claude-plugin/            Claude Code plugin metadata
-.codex-plugin/             Codex plugin metadata
-README.md                  Human entry point and installation guide
-AGENTS.md                  Agent-specific repository instructions
-LICENSE                    Effective repository license
-docs/decisions.md          Significant project-specific decisions, when present
-```
-
-Distribution metadata may reference the canonical `skills/` directory. It MUST NOT create
-independent copies of skill bodies that can drift from the canonical source.
-
-## Editing a skill
-
-Each skill MUST live at `skills/<skill-name>/SKILL.md`.
-
-When creating or changing a skill:
+When changing a skill:
 
 - keep the frontmatter `name` aligned with the directory name;
-- keep the frontmatter `description` explicit about what the skill does and when it should
-  be selected;
-- keep the workflow tool-agnostic unless interaction with a particular host or provider is
-  intrinsic to the task;
-- read current MiKode standards at execution time instead of hardcoding versions, policy
-  values, or complete rule sets into a skill;
-- distinguish repository-specific workflow instructions from cross-project engineering
-  policy;
-- make the smallest coherent change that completes the requested workflow;
-- avoid speculative capabilities and placeholder steps.
+- make the `description` explicit about what the skill does and when it should be selected;
+- keep workflows tool-agnostic unless a host or provider is intrinsic to the task;
+- read live MiKode policy at execution time instead of duplicating versions or complete
+  rules inside the skill;
+- keep distribution manifests pointing at the canonical skill bodies;
+- prefer strategic changes that avoid foreseeable technical debt over the smallest change
+  that only solves today's case;
+- do not add speculative capabilities without a concrete need.
 
-A skill that applies MiKode standards MUST determine applicability from each standard's
-scope before enforcing it. An inapplicable standard is not a violation.
+`CLAUDE.md` is a symlink to this file. Do not maintain separate Claude-specific copies of
+repository instructions.
 
-## Documentation
+## Tooling
 
-Use the root README for project purpose, installation, usage, current structure, and
-navigation. Put significant project-specific decisions in `docs/decisions.md`. Cross-project
-policy belongs in `Mikode13/engineering`.
+Do not introduce Node.js, pnpm, build, test, or type-check infrastructure merely to satisfy
+an interface. Add tooling when it validates a real repository invariant or supports an
+actual repository capability, then follow the standards that become applicable.
 
-Documentation should be technical, concise, explanatory, and structured for scanning.
-Link to authoritative MiKode standards instead of copying their complete content.
+## Before finishing
 
-## Tooling and validation
+Verify that:
 
-This repository currently has no Node.js or pnpm project toolchain. Do not add fake
-`package.json` scripts, builds, tests, or type checks for capabilities that do not exist.
-
-If repository-owned automated validation becomes useful, introduce the smallest validation
-surface that checks real invariants and document the decision. The current repository-level
-CI limitation is recorded in `docs/decisions.md` rather than hidden behind placeholder
-commands.
-
-Before completing a change, verify at minimum:
-
-- modified skill frontmatter is valid and names match their directories;
-- distribution manifests still reference the intended canonical skills;
-- changed Markdown links resolve;
-- README skill listings and installation instructions remain current;
-- no cross-project standard has been copied into a skill when it can be read live.
+- changed skill frontmatter is valid and directory names still match;
+- distribution manifests still reference the intended skills;
+- changed internal links resolve;
+- README skill listings and installation instructions remain current; and
+- no live engineering rule has been copied unnecessarily into a skill.
