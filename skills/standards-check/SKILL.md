@@ -1,80 +1,122 @@
 ---
 name: standards-check
-description: Lint a MiKode repository against the current MiKode engineering standards and ADRs - package manager, Node.js version, TypeScript config, ESLint, formatting, and licensing. Use as the last step before committing changes in a MiKode repo, or on demand to audit compliance. Fails on undocumented deviations and routes intentional changes to an ADR or a documented exception.
+description: Audit a MiKode repository against the current engineering standards and ADRs, applying only standards whose declared scope matches the repository and change. Use as a final gate before committing or on demand to find undocumented deviations without forcing unrelated tooling onto the project.
 ---
 
 # Check a repository against MiKode standards
 
-Verify that the repository's actual configuration complies with the engineering
-standards. A deviation passes only if it is covered by a documented exception or a
-change to the standards themselves; otherwise it is reported as a violation. Never
-silently accept a deviation, and never auto-fix without telling the user.
+Verify that the repository complies with the live MiKode engineering standards that
+actually apply to it. Applicability comes from each standard's declared `Scope`, not from a
+fixed list in this skill and not from the fact that a standard exists.
+
+An inapplicable standard is not a violation. A documented project decision may explain a
+deviation, but it does not override an active cross-project standard unless that standard
+allows the exception.
+
+Never silently accept a deviation and never auto-fix one without telling the user.
 
 ## 1. Load the current standards
 
-Locate the engineering repo (`../engineering`, `~/Documents/Mikode/Projects/engineering`,
-or `gh repo clone mikode13/engineering` to a temp dir). If it is a local checkout, pull
-first so the standards are current.
+Locate the engineering repository (`../engineering`,
+`~/Documents/Mikode/Projects/engineering`, or clone `mikode13/engineering` to a temporary
+directory). Refresh a local checkout before relying on it.
 
-Read `standards/README.md` for the list and statuses, then each standard. Severity
-follows status:
+Read `standards/README.md`, then read every standard whose scope may match the repository or
+the change being reviewed. Do not copy expected versions or policy values from this skill.
 
-- `Active` standard violated → **error**.
-- `Draft` standard violated → **warning** (not yet mandatory; note the related
-  proposed ADR).
+Status controls severity only after applicability is established:
 
-## 2. Run the checks
+- `Active` applicable standard violated → **error**.
+- `Draft` applicable standard violated → **warning**.
+- inapplicable standard → **not applicable**, with the reason recorded when useful.
 
-Take every expected value from the standards documents just read — never from this
-skill. What to inspect for each standard:
+## 2. Classify the repository before checking it
 
-- **Package management**: `pnpm-lock.yaml` exists; no `package-lock.json`,
-  `yarn.lock`, or Bun lockfile; `packageManager` pins the exact pnpm version required
-  by the standard; the `preinstall` package-manager guard is present; no globally
-  enabled dependency build scripts (check `pnpm-workspace.yaml` against the
-  standard's prohibited settings); no npm/yarn/bun commands in scripts, CI, or docs.
-- **Node.js version**: `.nvmrc` exists and matches the standard; `engines.node`
-  matches the standard's range; CI uses the required Node version.
-- **TypeScript**: `tsconfig.json` extends the shared configuration (or, until the
-  package is published, contains the documented equivalent options); no shared
-  strictness option is weakened; the TypeScript dependency is within the required
-  version line.
-- **Code quality**: `eslint.config.js` (flat config) extends the shared
-  configuration or documented equivalent; no formatting rules enabled in ESLint.
-- **Code formatting**: Prettier configuration matches the shared values; format
-  check script exists; CI runs it.
-- **Licensing**: `LICENSE` exists at the root; no `{{PLACEHOLDER}}` remains; package
-  metadata identifies the complete license per the standard; README describes the
-  project as source-available (or documents an exception license).
+Inspect the repository's actual files, README, manifests, source directories, and published
+artifacts. Determine the capabilities it really has, for example:
 
-Also check git state when relevant: a diff or recent commits that change any of the
-files above (for example `.nvmrc`, `engines`, a lockfile swap) get special attention —
-that is exactly the unauthorized-change case this skill exists to catch.
+- documentation or structured-content repository;
+- Node.js runtime or tooling;
+- TypeScript source;
+- React/frontend code;
+- executable application or service;
+- publishable npm package;
+- GitHub-hosted repository;
+- software using the MiKode source-available license.
 
-## 3. Resolve deviations
+Do not infer a capability merely because another MiKode repository has it. In particular,
+do not require `package.json`, pnpm, Node.js, TypeScript, ESLint, tests, or a build in a
+repository that does not own those capabilities unless an applicable standard explicitly
+requires them.
 
-For each mismatch, in order:
+Build a small applicability map before reporting violations:
 
-1. **Documented exception?** The standards require project-level exceptions to be
-   documented in the project's README (or its stated documentation). Look for it. If
-   present and it covers this deviation, report as an accepted exception, not a
-   violation.
-2. **Standards changed?** If the project matches a newer decision in the engineering
-   repo that the local standards copy predates, refresh and re-check.
-3. **Otherwise it is a violation.** Report it with: the file and value found, the
-   value the standard requires, the standard document, and the remediation options —
-   revert the change, document a project exception per that standard's Exceptions
-   section, or propose a cross-project change with the `adr-new` skill. Until one of
-   those happens, the change should not be committed.
+```text
+standard → status → applicable? → reason
+```
 
-## 4. Report
+When applicability is genuinely ambiguous, inspect more repository context before asking
+the user.
 
-End with a clear verdict:
+## 3. Check every applicable standard
 
-- **Pass** — compliant, or deviations covered by documented exceptions (list them).
-- **Fail** — list violations ordered by severity, each with its remediation options.
+Use the rules, required configuration, exceptions, and adoption sections from the live
+standard. Typical checks include, only when their scopes apply:
 
-When run as a pre-commit gate, a fail means: do not commit; tell the user what blocks
-the commit and how each path (fix, exception, ADR) would unblock it. The skill itself
-reports and advises — hard enforcement for changes made outside an agent session
-requires a CI check, which is a separate future decision.
+- **Documentation**: required root artifacts, ownership, project decision records,
+  authoritative-source links, and repository-local documentation boundaries.
+- **Documentation writing**: current-state documentation, concise explanatory style,
+  navigable sections, non-promotional language, focused examples, and explicit
+  limitations.
+- **Licensing**: effective root license, complete notices, source-available wording, and
+  package metadata when a package exists.
+- **Package management**: pnpm lockfile, pinned manager version, install policy, and absence
+  of conflicting package-manager artifacts.
+- **Node.js**: supported runtime range, `.nvmrc`, package metadata, and CI matrix.
+- **TypeScript**: shared strict configuration and applicable compiler policy.
+- **Code quality and formatting**: shared ESLint/Prettier policy for repositories that own
+  corresponding source or formatting capabilities.
+- **Testing**: required test boundaries and scripts for executable code or technical
+  configuration in scope.
+- **Git workflow and CI**: branch/PR conventions, merge policy, applicable local validation,
+  required GitHub checks, and documented exceptions.
+
+The list above is navigational, not authoritative. If a new standard appears, or an existing
+scope changes, the live engineering repository wins.
+
+Also inspect the current diff or recent relevant commits. A change that introduces or
+removes a capability can change which standards apply.
+
+## 4. Resolve deviations
+
+For every mismatch:
+
+1. **Does the standard itself permit an exception?** If yes, verify that the project has
+   documented it exactly where the standard requires. Report it as an accepted exception.
+2. **Is there only a project decision explaining the deviation?** Report the context, but
+   keep the applicable active-standard violation open unless the standard authorizes that
+   exception.
+3. **Did the standards change?** Refresh the engineering repository and re-check.
+4. **Otherwise it is a violation.** Report the file or repository setting found, the live
+   requirement, the standard, and the remediation paths: align the project, use a permitted
+   documented exception, or propose a cross-project change through `adr-new` when the
+   policy itself should change.
+
+Do not manufacture placeholder scripts or unused tooling merely to make a check green.
+If the only apparent remediation creates a capability the repository does not need, call
+out the scope conflict explicitly.
+
+## 5. Report
+
+Lead with the verdict and the applicability decisions that matter.
+
+- **Pass** — every applicable active standard is satisfied or covered by an exception the
+  standard explicitly permits.
+- **Fail** — one or more applicable active standards remain violated.
+
+Order violations by severity. For each finding include the evidence, applicable standard,
+why the scope matches, and the smallest valid remediation.
+
+When used as a pre-commit gate, a fail means: do not commit until the deviation is fixed,
+covered by a permitted exception, or the cross-project policy is changed. Hard enforcement
+outside an agent session remains the responsibility of repository CI and local tooling.
