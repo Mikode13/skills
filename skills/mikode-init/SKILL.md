@@ -1,82 +1,124 @@
 ---
 name: mikode-init
-description: Create a new MiKode project repository from scratch, applying the current MiKode engineering standards (licensing, pnpm, Node.js, TypeScript, ESLint, Prettier). Use when the user wants to start, bootstrap, or scaffold a new MiKode repo or package.
+description: Create a new MiKode repository from scratch by reading the live engineering standards and applying only the standards whose declared scope matches the project. Use when the user wants to start, bootstrap, or scaffold a MiKode repository without inventing capabilities the project does not need.
 ---
 
 # Initialize a MiKode project repository
 
-Create a new git repository that complies with the current MiKode engineering
-standards. Never hardcode standard values from this skill: always read the live
-standards so the scaffold reflects the current policy.
+Create a new repository that follows the current MiKode engineering standards applicable
+to its actual project shape. Never hardcode standard values from this skill and never turn
+a documentation, content, or non-Node repository into a Node.js project merely because
+Node-oriented standards exist.
 
-## 1. Locate the engineering repository
+## 1. Load the engineering source of truth
 
-The source of truth is `mikode13/engineering`.
+Locate `mikode13/engineering` through a current local checkout or a temporary clone.
 
-1. Look for a local checkout at `../engineering` relative to the current directory, or
-   at `~/Documents/Mikode/Projects/engineering`.
-2. If no local checkout exists, clone it to a temporary directory:
-   `gh repo clone mikode13/engineering <tmpdir>`.
+Read `standards/README.md` first. Then read the standards whose scopes may match the
+project, including the documentation ownership and documentation writing standards for a
+normal MiKode repository.
 
-Read before scaffolding:
+Read templates only when the applicable standard calls for them.
 
-- `standards/licensing.md` and `templates/LICENSE.template`
-- `standards/package-management.md`
-- `standards/nodejs-version.md`
-- `standards/typescript.md`
-- `standards/code-quality.md`
-- `standards/code-formatting.md`
+Treat:
 
-Treat `Active` standards as mandatory. For `Draft` standards, apply them but tell the
-user which applied standards are still drafts.
+- applicable `Active` standards as mandatory;
+- applicable `Draft` standards as non-binding guidance that must be reported to the user;
+- standards outside the project scope as not applicable.
 
-## 2. Gather project facts
+Do not apply a standard before checking its `Scope` section.
 
-Ask the user in this order (do not guess):
+## 2. Gather the project facts
 
-1. Project type: Node library, browser library, React library, or config package.
-2. Project/package name: ask for a short kebab-case name, without a GitHub owner or
-   npm scope. Use the answer consistently:
-   - GitHub repository: `mikode13/<project-name>`.
-   - `package.json` name: `@mikode13/<project-name>` by default. If the user provides a
-     different valid package name or the project is not intended to be published, use
-     that exact choice instead.
-   - Never silently substitute `mikode` for the user's project name or for the
-     `mikode13` GitHub owner.
-3. Project goal and brief description: ask, "What do you plan to build?" Capture a
-   concise one- or two-sentence description and use it for both
-   `package.json.description` and the initial README description.
-4. Visibility (public or private).
-5. Licensor name and confirmation that the MiKode source-available license applies, or
-   which exception license to use instead.
+Ask only for facts that cannot be derived from the user's request. Resolve these before
+scaffolding:
 
-## 3. Create and scaffold
+1. Project name and purpose.
+2. Repository shape: for example library, application, service, configuration package,
+   documentation/content repository, agent/skill repository, or another explicit type.
+3. Runtime and languages, if any.
+4. Whether it will be published, packaged, deployed, or only consumed directly from the
+   repository.
+5. Visibility: public or private.
+6. Effective license: confirm the MiKode source-available model when its licensing standard
+   applies, or record the chosen exception/other license when it does not.
 
-1. `gh repo create mikode13/<project-name>` with the chosen visibility, clone it
-   locally.
-2. Scaffold, taking every concrete value (versions, ranges, options) from the
-   standards documents read in step 1:
-   - `LICENSE` — completed from `templates/LICENSE.template`, all placeholders
-     replaced; run the validation checklist in `standards/licensing.md`.
-   - `package.json` — the collected package name and brief description,
-     `"type": "module"`, pinned `packageManager`, `engines`, the `preinstall`
-     package-manager guard, and the standard scripts
-     (format, lint, typecheck/build, test placeholder).
-   - `.nvmrc` — per the Node.js version standard.
-   - `pnpm-workspace.yaml` — only if the standards require settings there.
-   - `tsconfig.json` — extending the shared config for the chosen project type, or the
-     documented equivalent options if the shared package is not yet published.
-   - `eslint.config.js` and Prettier configuration — same rule: shared package if
-     published, documented equivalent otherwise.
-   - `.gitignore` — `node_modules/`, `dist/`, editor and OS noise.
-   - `README.md` — name, description, install/usage placeholder, and the
-     source-available license statement required by the licensing standard.
-3. Install dependencies with pnpm and verify: format check, lint, and type check all
-   pass on the empty scaffold.
-4. Initial commit and push.
+Ask additional questions only when they materially change which standards apply.
 
-## 4. Report
+## 3. Build an applicability plan
 
-Tell the user: the repo URL, which standards were applied (with their statuses), any
-placeholder or TODO left in the scaffold, and any standard that could not be applied
-with the reason.
+Before creating files, summarize the relevant standards internally as:
+
+```text
+standard → status → applicable? → reason
+```
+
+Examples:
+
+- A Node.js TypeScript library may need package management, Node.js, TypeScript, code
+  quality, formatting, testing, documentation, Git workflow, CI, and licensing standards.
+- A Markdown skill repository may need documentation, GitHub governance, and licensing
+  policy without needing TypeScript, ESLint, Vitest, or a Node.js runtime.
+- A repository outside the Node.js/pnpm ecosystem should use the exceptions defined by the
+  Git workflow and CI standards rather than manufacturing Node-specific capabilities.
+
+If an active standard claims the project in scope but the available implementation profile
+cannot represent the repository honestly, surface the conflict. Do not hide it with
+placeholder commands; document or escalate it according to the standard.
+
+## 4. Scaffold only real capabilities
+
+Every normal MiKode repository should receive the baseline artifacts required by the live
+documentation standard, using current templates when one exists. At minimum, create the
+human entry point, agent instructions, and effective license required for that project.
+
+Then add only configuration justified by applicable standards and actual capabilities.
+Examples include:
+
+- `package.json`, lockfile, pnpm configuration, and package-manager guard only when the
+  project actually uses the Node.js/npm ecosystem;
+- `.nvmrc` and `engines` only when the repository has a Node.js runtime or applicable
+  Node-based tooling;
+- `tsconfig.json` only for TypeScript source or configuration in scope;
+- ESLint and Prettier configuration only when their standards apply to repository-owned
+  content;
+- test and build scripts only when the project has meaningful tests or a build;
+- CI using the applicable repository profile and honest project-owned validation commands;
+- `docs/decisions.md` only when the project records its first significant project-specific
+  decision, never as an empty placeholder.
+
+Do not add fake `test`, `build`, `typecheck`, or validation commands that exist only to
+satisfy an interface.
+
+## 5. Write the initial documentation
+
+Follow the active documentation writing standard.
+
+The README should provide or link to the information needed to understand:
+
+- what the project is and why it exists;
+- its current status and meaningful limitations;
+- how to install or prepare it when installation exists;
+- how to run, consume, or use it successfully for the first time;
+- its important architecture or components when they help understanding.
+
+Keep agent-only repository instructions in `AGENTS.md`. Link to authoritative MiKode
+standards instead of copying complete policy text.
+
+## 6. Validate and report
+
+Run every validation command that genuinely belongs to the scaffold. Use
+`standards-check` as the final policy audit.
+
+If an applicable active standard cannot be satisfied without inventing an unused
+capability, stop and report the scope/implementation conflict rather than silently
+creating ceremony.
+
+Report:
+
+- repository URL;
+- repository shape and capabilities;
+- applicable standards and their statuses;
+- standards deliberately classified as not applicable when that distinction matters;
+- validation performed;
+- any unresolved deviation or documented exception.
