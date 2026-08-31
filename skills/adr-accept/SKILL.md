@@ -1,6 +1,6 @@
 ---
 name: adr-accept
-description: Accept a proposed MiKode ADR - flip statuses, activate the related standard, update all indexes, and handle supersession, consistently and completely. Use when the user confirms a proposed decision should become accepted.
+description: Accept a proposed MiKode ADR - flip statuses, activate the related standard, update all indexes, handle supersession, and finish an approved Draft pull request consistently. Use when the user confirms a proposed decision should become accepted.
 ---
 
 # Accept a MiKode ADR
@@ -44,6 +44,20 @@ it. Read `AGENTS.md` in the engineering repository first; its rules win if they 
   standard name to catch stragglers.
 - Run the change review checklist in `AGENTS.md`.
 
-Commit only when the user asks. Report what changed and anything the acceptance now
-unblocks (dependent skills, package repos to create, projects that can adopt the
+## 5. Finish an existing Draft pull request
+
+When acceptance follows an `adr-new` Draft pull request and the user explicitly approved
+both the decision and the reviewed pull request:
+
+1. Commit and push the acceptance changes to that pull request's branch.
+2. Wait for the required checks to pass.
+3. Mark the pull request **Ready for review**.
+4. Do not merge it unless the user separately asks.
+
+If there is no Draft pull request, or the user approved the decision but asked to keep
+reviewing the pull request, do not change any pull request state. Outside the
+`adr-new` Draft workflow, commit or push only when the user asks.
+
+Report what changed, the pull request state when applicable, and anything the acceptance
+now unblocks (dependent skills, package repos to create, projects that can adopt the
 standard).

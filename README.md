@@ -13,11 +13,12 @@ other agents that support the skills format.
 - **mikode-context** — load the current MiKode engineering context into any session:
   active standards, accepted and proposed ADRs, and conflicts between the open
   repository and the standards.
-- **adr-new** — create a new Architecture Decision Record in the engineering
-  repository through a guided interview: the user provides the reasoning, the agent
-  verifies facts and fills gaps visibly.
+- **adr-new** — create a new Architecture Decision Record through a guided interview,
+  publish it behind a Draft pull request for safe review, and finalize it after one
+  explicit user approval.
 - **adr-accept** — accept a proposed ADR: flip statuses, activate the related
-  standard, update every index, and handle supersession consistently.
+  standard, update every index, handle supersession consistently, and mark an approved
+  Draft pull request ready without merging it.
 - **standards-check** — lint a MiKode repository against the current standards as a
   final gate: undocumented deviations fail until they are reverted, covered by a
   documented exception, or proposed as an ADR.

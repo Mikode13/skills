@@ -1,6 +1,6 @@
 ---
 name: adr-new
-description: Create a new Architecture Decision Record in the MiKode engineering repository through a guided interview - the user provides the decision schema (choice, alternatives, reasons, pros and cons), the agent verifies facts and fills gaps, and the ADR is drafted together. Use when the user wants to document, propose, discuss, or record a cross-project technical decision.
+description: Create a new Architecture Decision Record in the MiKode engineering repository through a guided interview and a protected Draft pull request. Use when the user wants to discuss, document, propose, or record a cross-project technical decision and review it before it can be merged.
 ---
 
 # Create a new MiKode ADR (guided interview)
@@ -49,7 +49,7 @@ With the schema in hand:
 3. **Correct**: if a user claim is wrong or outdated, say so with the source, and let
    the user decide how the ADR should state it.
 
-## 4. Draft, review, iterate
+## 4. Draft and confirm the proposal
 
 1. Locate the engineering repo (local checkout or `gh repo clone mikode13/engineering`).
 2. Next unused sequential number in `adr/`; copy `templates/ADR.template.md` to
@@ -57,9 +57,10 @@ With the schema in hand:
    decision, not the topic).
 3. Draft every section from the schema: the user's reasoning is the spine of Context,
    Decision, and Alternatives; verified facts and agent additions complete it.
-4. Present the draft (or a summary of each section) for review and iterate until the
-   user is satisfied. Status stays `Proposed` until the user explicitly accepts the
-   decision.
+4. Present the draft (or a summary of each section) in the interview and iterate until
+   the user confirms that it accurately represents the proposal. Status stays
+   `Proposed` until the user explicitly accepts the decision after reviewing the Draft
+   pull request.
 
 ## 5. Wire it in
 
@@ -69,10 +70,46 @@ With the schema in hand:
 3. If the ADR supersedes an earlier one, set both `Supersedes`/`Superseded by` lines
    and update the old ADR's status — never rewrite its content.
 4. Check all relative links resolve, and run the change review checklist from
-   `AGENTS.md`. Commit only when the user asks.
+   `AGENTS.md`.
 
-## 6. Report
+## 6. Open the review gate
+
+Once the interview schema and every substantive agent addition are confirmed:
+
+1. Create a topic branch from the current default branch.
+2. Commit and push the complete proposal, including its `Proposed` ADR, any `Draft`
+   standard, and all index changes.
+3. Open the pull request as a GitHub **Draft**. Use a valid Conventional Commit title
+   and include the validation performed in the body.
+4. Report the Draft pull request URL and the exact items that still require the user's
+   review.
+
+The Draft pull request is the merge-safety gate. Never open the initial pull request as
+ready for review, mark it ready, approve it, or merge it merely because the interview is
+complete. GitHub calls the transition out of Draft **Ready for review**; do not describe
+it as a review approval.
+
+## 7. Finish after review
+
+Keep review corrections on the same Draft pull request. The ADR remains `Proposed` and
+its standard remains `Draft` while the user is still reviewing them.
+
+When the user explicitly says the decision and pull request are approved:
+
+1. Apply the complete `adr-accept` workflow on the same branch: accept the ADR, activate
+   its standards, handle supersession, and update every index.
+2. Re-run the repository validation and commit and push the acceptance changes.
+3. Mark the existing pull request **Ready for review** only after the acceptance commit
+   is published and the required checks pass.
+4. Leave the merge to the user unless they separately ask the agent to merge it.
+
+One explicit approval should be enough to perform these steps. Do not require the user
+to separately ask for `adr-accept`, a final commit, a push, and the Draft-to-Ready
+transition.
+
+## 8. Report
 
 State what was created, which parts of the reasoning came from the user versus were
-added and confirmed, and what remains open (acceptance, standard activation, template
-updates).
+added and confirmed, the Draft pull request state, and what remains open. After
+acceptance, report the active standards, validation result, and that the pull request is
+ready for the user's merge.
