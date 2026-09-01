@@ -29,11 +29,17 @@ When changing a skill:
 - make the `description` explicit about what the skill does and when it should be selected;
 - keep workflows tool-agnostic unless a host or provider is intrinsic to the task;
 - read live MiKode policy at execution time instead of duplicating versions or complete
-  rules inside the skill;
+  rules inside the skill (e.g., when the skill references MiKode standards, fetch and
+  cite the current rule instead of embedding a snapshot);
 - keep distribution manifests pointing at the canonical skill bodies;
 - prefer strategic changes that avoid foreseeable technical debt over the smallest change
   that only solves today's case;
 - do not add speculative capabilities without a concrete need.
+
+**Examples:** Skills may *describe* Node.js tooling or recommend TypeScript, but the
+repository itself adds no build infrastructure, linting, or test runners. If two skills
+describe the same MiKode standard, both read the same upstream source instead of copying
+the text.
 
 `CLAUDE.md` is a symlink to this file. Do not maintain separate Claude-specific copies of
 repository instructions.
@@ -53,3 +59,7 @@ Verify that:
 - changed internal links resolve;
 - README skill listings and installation instructions remain current; and
 - no live engineering rule has been copied unnecessarily into a skill.
+
+**Link validation:** If you add cross-file references (links to other `.md` files or
+anchors within them), manually verify the targets exist. Future repository automation may
+add link-checking, but it is not yet part of CI.

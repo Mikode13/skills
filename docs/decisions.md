@@ -22,6 +22,15 @@ This is a project-specific implementation gap, not a claim that documentation CI
 wrong profile. If the same constraint appears in another content-only repository, it should
 be handled as a cross-project CI design problem.
 
+### Applicability
+
+This decision applies to all repository-wide tooling choices. It does not limit:
+- Skill content that happens to reference Node.js, TypeScript, or other ecosystems
+  (skills can document tools used in projects; the repository itself stays content-first).
+- Agents' own tool use when executing skills (agents add their own capabilities as needed).
+- Future decisions to adopt tooling when it solves a real repository problem (e.g., if skill
+  validation or link-checking becomes critical, that would warrant its own ADR).
+
 ### Consequences
 
 - The repository stays honest about the capabilities it actually owns.
