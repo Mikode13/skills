@@ -7,10 +7,12 @@
 `skills` remains a content-first repository. It will not add a Node.js or pnpm toolchain
 solely to satisfy repository ceremony.
 
-For CI, `skills` conceptually belongs to the documentation profile. The current blocker is
-that MiKode's documentation CI path is coupled to pnpm-backed project commands. Until that
-profile can validate this repository without manufacturing unused runtime capabilities,
-repository-specific automated CI is deferred.
+For CI, the Documentation capability applies to this repository. The active MiKode CI
+standard now separates that validation responsibility from runtime tooling, but the current
+central workflow revision still exposes the legacy `docs` profile through pnpm-backed
+project commands. Until `Mikode13/.github` implements the accepted capability contract,
+`skills` cannot add a compliant CI caller without inventing unsupported inputs or unrelated
+repository tooling.
 
 ### Context
 
@@ -18,23 +20,23 @@ The canonical artifacts are Markdown skill definitions and small plugin manifest
 directly by host agents. Node.js, TypeScript, build, and test capabilities are not part of
 the product today.
 
-This is a project-specific implementation gap, not a claim that documentation CI is the
-wrong profile. If the same constraint appears in another content-only repository, it should
-be handled as a cross-project CI design problem.
+The remaining CI blocker is central implementation, not repository classification. It should
+be resolved in `Mikode13/.github` under ADR 0015 rather than through a local workaround.
 
 ### Applicability
 
-This decision applies to all repository-wide tooling choices. It does not limit:
-- Skill content that happens to reference Node.js, TypeScript, or other ecosystems
-  (skills can document tools used in projects; the repository itself stays content-first).
-- Agents' own tool use when executing skills (agents add their own capabilities as needed).
-- Future decisions to adopt tooling when it solves a real repository problem (e.g., if skill
-  validation or link-checking becomes critical, that would warrant its own ADR).
+This decision applies to repository-wide tooling choices. It does not limit:
+
+- skill content that happens to reference Node.js, TypeScript, or other ecosystems;
+- agents' own tool use when executing skills; or
+- future repository-specific tooling that validates a real invariant not covered by the
+  common Documentation capability.
 
 ### Consequences
 
 - The repository stays honest about the capabilities it actually owns.
-- Useful future validation can target skill frontmatter, manifest references, and internal
-  links without pretending the repository is an application.
-- The current organization-wide CI requirement remains unresolved for this repository until
-  the documentation profile supports this shape cleanly.
+- Common Markdown, link, and asset checks belong to the central Documentation capability.
+- Repository-specific validation may later cover real skill invariants such as frontmatter
+  or manifest references when those checks are justified.
+- The active CI requirement remains unresolved for this repository until the central
+  workflow supports the Documentation capability cleanly.
