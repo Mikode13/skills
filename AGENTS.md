@@ -60,6 +60,6 @@ Verify that:
 - README skill listings and installation instructions remain current; and
 - no live engineering rule has been copied unnecessarily into a skill.
 
-**Link validation:** If you add cross-file references (links to other `.md` files or
-anchors within them), manually verify the targets exist. Future repository automation may
-add link-checking, but it is not yet part of CI.
+Until the central Documentation capability is available to this repository, manually verify
+changed internal links and anchors. Do not add local runtime tooling solely to reproduce
+checks that belong to the common capability contract.
