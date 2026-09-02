@@ -12,6 +12,8 @@ other compatible agents.
 - **adr-new** — create a new Architecture Decision Record through a guided interview.
 - **adr-accept** — accept a proposed ADR and update its related standards and indexes.
 - **standards-check** — audit a repository against applicable active MiKode standards.
+- **mikode-documentation** — create, update, or review technical documentation using the
+  current MiKode documentation policy.
 - **mikode-code-philosophy** — apply the MiKode coding philosophy when implementing or
   refactoring production code.
 - **mikode-code-philosophy-review** — review a change against the MiKode coding philosophy
