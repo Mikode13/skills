@@ -16,6 +16,17 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  format-debug:
+    name: format debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Show Prettier diff
+        run: |
+          npx --yes prettier@3.9.6 --write AGENTS.md
+          git diff -- AGENTS.md
+
   ci:
     name: CI
     uses: Mikode13/.github/.github/workflows/ci.yml@813d80713d5aa375023421674719267028aa01e5
