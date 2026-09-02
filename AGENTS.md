@@ -36,7 +36,7 @@ When changing a skill:
   that only solves today's case;
 - do not add speculative capabilities without a concrete need.
 
-**Examples:** Skills may *describe* Node.js tooling or recommend TypeScript, but the
+**Examples:** Skills may _describe_ Node.js tooling or recommend TypeScript, but the
 repository itself adds no build infrastructure, linting, or test runners. If two skills
 describe the same MiKode standard, both read the same upstream source instead of copying
 the text.
@@ -60,6 +60,6 @@ Verify that:
 - README skill listings and installation instructions remain current; and
 - no live engineering rule has been copied unnecessarily into a skill.
 
-Until the central Documentation capability is available to this repository, manually verify
-changed internal links and anchors. Do not add local runtime tooling solely to reproduce
-checks that belong to the common capability contract.
+Repository CI consumes the central Documentation capability for common Markdown, link, and
+asset validation. Do not add local runtime tooling solely to duplicate checks owned by that
+common capability contract.

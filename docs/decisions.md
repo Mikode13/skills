@@ -8,11 +8,10 @@
 solely to satisfy repository ceremony.
 
 For CI, the Documentation capability applies to this repository. The active MiKode CI
-standard now separates that validation responsibility from runtime tooling, but the current
-central workflow revision still exposes the legacy `docs` profile through pnpm-backed
-project commands. Until `Mikode13/.github` implements the accepted capability contract,
-`skills` cannot add a compliant CI caller without inventing unsupported inputs or unrelated
-repository tooling.
+standard separates that validation responsibility from runtime tooling, and `skills`
+consumes the reviewed central workflow with the Documentation capability enabled. The
+repository therefore gets common Markdown, link, and asset validation without owning a
+Node.js or pnpm toolchain.
 
 ### Context
 
@@ -20,8 +19,9 @@ The canonical artifacts are Markdown skill definitions and small plugin manifest
 directly by host agents. Node.js, TypeScript, build, and test capabilities are not part of
 the product today.
 
-The remaining CI blocker is central implementation, not repository classification. It should
-be resolved in `Mikode13/.github` under ADR 0015 rather than through a local workaround.
+The earlier central implementation blocker has been resolved in `Mikode13/.github` under
+ADR 0015. Repository-specific tooling is still unnecessary unless a real local invariant
+appears that the common Documentation capability does not cover.
 
 ### Applicability
 
@@ -38,5 +38,5 @@ This decision applies to repository-wide tooling choices. It does not limit:
 - Common Markdown, link, and asset checks belong to the central Documentation capability.
 - Repository-specific validation may later cover real skill invariants such as frontmatter
   or manifest references when those checks are justified.
-- The active CI requirement remains unresolved for this repository until the central
-  workflow supports the Documentation capability cleanly.
+- The active CI requirement is satisfied through the central Documentation capability
+  without introducing unrelated repository tooling.
