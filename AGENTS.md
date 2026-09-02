@@ -36,7 +36,7 @@ When changing a skill:
   that only solves today's case;
 - do not add speculative capabilities without a concrete need.
 
-**Examples:** Skills may *describe* Node.js tooling or recommend TypeScript, but the
+**Examples:** Skills may _describe_ Node.js tooling or recommend TypeScript, but the
 repository itself adds no build infrastructure, linting, or test runners. If two skills
 describe the same MiKode standard, both read the same upstream source instead of copying
 the text.
