@@ -5,33 +5,43 @@ description: Load the current MiKode engineering context into the session - acti
 
 # Load MiKode engineering context
 
-Bring the current state of MiKode engineering decisions into the session so work in
-any MiKode repository follows the active standards without guessing.
+Bring the current MiKode engineering state into the session without relying on a stale
+local branch.
 
-## 1. Locate the engineering repository
+## 1. Load the latest engineering main
 
-Look for a local checkout at `../engineering` or `~/Documents/Mikode/Projects/engineering`;
-otherwise clone `mikode13/engineering` to a temporary directory with `gh repo clone`.
+Look for a local checkout at `../engineering` or `~/Documents/Mikode/Projects/engineering`.
+If one exists, fetch `origin/main` and read policy from that ref rather than from the
+currently checked-out branch.
 
-If a local checkout exists, run `git -C <path> pull --ff-only` first so the context is
-current, and mention if the pull fails.
+If the local checkout cannot fetch the latest `origin/main`, clone `Mikode13/engineering`
+to a temporary directory and read its `main` branch there.
 
-## 2. Read the indexes, then only what is relevant
+The latest `Mikode13/engineering` `main` is authoritative.
 
-1. Read `README.md`, `adr/README.md`, and `standards/README.md` to learn what exists
-   and each document's status.
-2. Read in full only the standards relevant to the task at hand (for example, skip the
-   licensing standard when the task is a code change in an existing repo).
+## 2. Read the indexes, then only relevant documents
+
+Read `adr/README.md` and `standards/README.md` first. Use the root README only when its
+navigation or repository-specific context is useful.
+
+Read in full only the documents relevant to the task:
+
+- applicable **Active** standards define current policy;
+- accepted ADRs provide reasoning when needed;
+- proposed ADRs and draft standards may be reported as non-binding context.
+
+Determine applicability from each standard's declared scope. Do not assume a repository
+has Node.js, TypeScript, pnpm, testing, build, or package capabilities merely because other
+MiKode repositories do.
 
 ## 3. Report
 
-Summarize for the user:
+Summarize the current policy relevant to the task and any proposed decisions that materially
+affect the discussion, clearly marked as non-binding.
 
-- Active standards and the one-line rule of each.
-- Proposed ADRs and draft standards, marked clearly as not yet mandatory.
-- Any conflict between the current repository's setup and an active standard, if a
-  repository is open (check `package.json`, lockfile type, `.nvmrc`, tsconfig, and
-  lint/format configs against the standards).
+If a repository is open, mention obvious conflicts with applicable active standards. For a
+full compliance audit, use `standards-check` rather than maintaining a second fixed
+checklist in this skill.
 
-Keep the summary short; link to the documents rather than reproducing them. Apply the
-active standards for the rest of the session.
+Keep the summary short and link to authoritative documents instead of reproducing them.
+Apply the active standards for the rest of the session.

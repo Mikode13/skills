@@ -50,9 +50,15 @@ When acceptance follows an `adr-new` Draft pull request and the user explicitly 
 both the decision and the reviewed pull request:
 
 1. Commit and push the acceptance changes to that pull request's branch.
-2. Wait for the required checks to pass.
+2. Wait for the required checks to pass. If checks are missing or fail, report the
+   blocker and do not mark the pull request ready.
 3. Mark the pull request **Ready for review**.
 4. Do not merge it unless the user separately asks.
+
+The acceptance workflow owns supersession: only here may the previous ADR become
+`Superseded`, its active standard be retired, and the indexes be updated to reflect that
+transition. If the proposal is rejected or withdrawn, leave the accepted decision and
+active standard unchanged.
 
 If there is no Draft pull request, or the user approved the decision but asked to keep
 reviewing the pull request, do not change any pull request state. Outside the

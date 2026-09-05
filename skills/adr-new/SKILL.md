@@ -52,23 +52,26 @@ With the schema in hand:
 ## 4. Draft and confirm the proposal
 
 1. Locate the engineering repo (local checkout or `gh repo clone mikode13/engineering`).
-2. Next unused sequential number in `adr/`; copy `templates/ADR.template.md` to
+2. Start from the latest default branch and choose the next unused sequential number in
+   `adr/`; copy `templates/ADR.template.md` to
    `adr/NNNN-short-decision-title.md` (lowercase kebab-case; the title names the
    decision, not the topic).
 3. Draft every section from the schema: the user's reasoning is the spine of Context,
    Decision, and Alternatives; verified facts and agent additions complete it.
 4. Present the draft (or a summary of each section) in the interview and iterate until
    the user confirms that it accurately represents the proposal. Status stays
-   `Proposed` until the user explicitly accepts the decision after reviewing the Draft
-   pull request.
+   `Proposed`, and any related standard stays `Draft`, while the user reviews the
+   Draft pull request.
 
 ## 5. Wire it in
 
 1. Add the ADR to `adr/README.md` and the root `README.md` indexes.
 2. If the decision has an actionable rule set, create or update the matching standard
    in `standards/` with status `Draft`, and index it.
-3. If the ADR supersedes an earlier one, set both `Supersedes`/`Superseded by` lines
-   and update the old ADR's status — never rewrite its content.
+3. If the proposal would supersede an earlier decision, record the proposed
+   relationship on the new ADR, but do not change the accepted ADR's status, its active
+   standard, or the indexes while the proposal is still `Proposed`. The acceptance
+   workflow owns that transition; never rewrite the earlier ADR's reasoning.
 4. Check all relative links resolve, and run the change review checklist from
    `AGENTS.md`.
 
@@ -76,7 +79,7 @@ With the schema in hand:
 
 Once the interview schema and every substantive agent addition are confirmed:
 
-1. Create a topic branch from the current default branch.
+1. Create a topic branch from the latest default branch.
 2. Commit and push the complete proposal, including its `Proposed` ADR, any `Draft`
    standard, and all index changes.
 3. Open the pull request as a GitHub **Draft**. Use a valid Conventional Commit title
@@ -92,20 +95,25 @@ it as a review approval.
 ## 7. Finish after review
 
 Keep review corrections on the same Draft pull request. The ADR remains `Proposed` and
-its standard remains `Draft` while the user is still reviewing them.
+its related standard remains `Draft`; any previously accepted ADR and active standard
+remain effective while the proposal is under review.
 
-When the user explicitly says the decision and pull request are approved:
+When the user explicitly approves both the decision and the reviewed pull request:
 
 1. Apply the complete `adr-accept` workflow on the same branch: accept the ADR, activate
    its standards, handle supersession, and update every index.
-2. Re-run the repository validation and commit and push the acceptance changes.
-3. Mark the existing pull request **Ready for review** only after the acceptance commit
-   is published and the required checks pass.
+2. Re-run the repository validation, then commit and push the acceptance changes.
+3. Mark the existing pull request **Ready for review** only after the acceptance commit is
+   published and the required checks pass.
 4. Leave the merge to the user unless they separately ask the agent to merge it.
 
-One explicit approval should be enough to perform these steps. Do not require the user
-to separately ask for `adr-accept`, a final commit, a push, and the Draft-to-Ready
-transition.
+If the user requests changes, keep the pull request Draft and apply them on the same
+branch. If the user rejects or withdraws the proposal, do not accept the ADR or retire
+the previous policy; close the Draft pull request only after reporting that no policy
+change was applied.
+
+One explicit approval should be enough to perform the acceptance, final commit, push, and
+Draft-to-Ready transition. Do not require the user to separately ask for `adr-accept`.
 
 ## 8. Report
 
