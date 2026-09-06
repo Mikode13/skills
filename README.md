@@ -9,8 +9,11 @@ other compatible agents.
 - **mikode-init** — create a MiKode repository from the current engineering standards,
   applying only the standards that match the project.
 - **mikode-context** — load the current MiKode engineering context into a session.
-- **adr-new** — create a new Architecture Decision Record through a guided interview.
-- **adr-accept** — accept a proposed ADR and update its related standards and indexes.
+- **adr-new** — create a new Architecture Decision Record through a guided interview,
+  publish it behind a Draft pull request for safe review, and finalize it after one
+  explicit user approval.
+- **adr-accept** — accept a proposed ADR, update its related standards and indexes,
+  and finish the reviewed Draft pull request without merging it.
 - **standards-check** — audit a repository against applicable active MiKode standards.
 - **mikode-documentation** — create, update, or review technical documentation using the
   current MiKode documentation policy.
