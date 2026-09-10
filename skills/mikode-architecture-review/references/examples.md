@@ -22,7 +22,7 @@ Report the public signature and affected consumers: changing provider now requir
 outside the adapter. Recommend an application-owned result with the guarantees consumers
 need. One public method does not make this a deep or provider-independent interface.
 
-## A shallow port moves work to consumers
+## A shallow module moves work to consumers
 
 Request: review `history/` from chat, with no diff. Its public API exposes `popUndoStack`,
 `pushRedoStack`, and mutable action arrays. Both the keyboard handler and toolbar implement
@@ -32,6 +32,18 @@ Report a current-state finding: consumers own the consistency of data that belon
 History, so each editor integration must reproduce the same bookkeeping. Recommend coherent
 record/undo/redo operations that encapsulate it. Do not dismiss the finding as pre-existing
 because this is a review of the module itself.
+
+## A port copies a provider API
+
+Request: review a change that adds an application `ModelGateway` port with methods and types
+copied directly from a vendor SDK, such as `messages.create(vendorRequest): Promise<vendorResponse>`.
+Consumers now branch on vendor event names and response fields, so changing providers still
+requires edits outside the adapter.
+
+Report the provider-shaped contract and its consequence. Recommend an application-owned
+operation and result with the guarantees consumers need, leaving SDK translation in the
+adapter. A port with one implementation can still protect a real boundary; the problem is
+leaking the vendor contract, not the number of implementations.
 
 ## A dependency bypasses the owning module
 

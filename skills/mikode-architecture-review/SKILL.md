@@ -1,13 +1,20 @@
 ---
 name: mikode-architecture-review
-description: Review architectural responsibilities, module boundaries, public contracts, and information hiding in selected code, a module, local changes, or a pull request. Use when architectural review is requested directly or delegated by a reviewer; use the project's architecture documentation to judge the design in context.
+description: Review architecture in selected code, modules, local changes, or pull requests. Activate for boundaries, public contracts, dependency direction, persistence or data flow, provider integrations, cross-cutting abstractions, or documented architecture decisions; use the project's architecture document as context.
 ---
 
 # Review architecture the MiKode way
 
 Evaluate where responsibilities belong, what modules expose, and what consumers must
 understand. Code review owns implementation correctness and local code quality; this skill
-owns architectural consequences. Report overlapping problems once, with their evidence.
+owns architectural consequences. When both reviewers run, the caller deduplicates overlapping
+findings; in standalone use, report architectural findings within the requested scope.
+
+## When to activate
+
+Select this skill for the architectural concerns listed in the description, or when a user
+asks for a current-state architecture review. Do not select it merely because a project has
+multiple folders or modules.
 
 ## Establish the review scope
 
@@ -26,8 +33,8 @@ publishing comments, creating decisions, or redesigning the project.
 
 ## Load the architectural context
 
-Read applicable `AGENTS.md` instructions and the project's `ARCHITECTURE.md`, including
-`architecture.md` or an architecture document linked from its README or under `docs/`.
+Read applicable `AGENTS.md` instructions and the project's `ARCHITECTURE.md` or
+`architecture.md`, or an architecture document linked from its README or under `docs/`.
 Use the document for responsibilities, boundaries, dependency direction, public contracts,
 and accepted trade-offs. Follow only links relevant to the selected scope.
 
@@ -100,10 +107,16 @@ encoding while retaining these fields:
 - `coverage`: `complete`, `incomplete`, or `not_applicable`, with a reason and limitations.
   Complete means the requested scope was reviewed; it does not mean there are no findings.
   Use not applicable only after confirming the scope has no architectural impact.
-- `findings`: severity, title, location, evidence, consequence, recommended direction, and
-  origin (`introduced`, `pre_existing`, `current_state`, or `unknown`).
+- `findings`: severity, title, location, evidence, consequence, and recommended direction.
+  In change reviews, include origin (`introduced`, `pre_existing`, or `unknown`).
 - `context`: architectural sources consulted and explicitly labelled inferences.
 - `questions` and `trade_offs`: unresolved intent and relevant accepted compromises.
+- `follow_up`: optional validation, documentation, or ADR follow-up; omit when none.
+
+For interactive output, use the shared code-review format (`Location`, `Problem`, `Why it
+matters`, and `Recommended direction`) and add `Origin` for change reviews plus `Follow-up`
+when applicable. In current-state reviews, scope already identifies the review as current
+state, so do not add an origin field.
 
 In change reviews, separate pre-existing debt from introduced problems; an unknown base
 means attribution is unknown. In current-state reviews, existing problems within scope
