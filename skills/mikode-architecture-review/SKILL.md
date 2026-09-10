@@ -33,8 +33,9 @@ publishing comments, creating decisions, or redesigning the project.
 
 ## Load the architectural context
 
-Read applicable `AGENTS.md` instructions and the project's `ARCHITECTURE.md` or
-`architecture.md`, or an architecture document linked from its README or under `docs/`.
+Read applicable `AGENTS.md` instructions and `docs/architecture.md`, the canonical
+project architecture document. If it is absent, inspect an architecture document linked
+from the README or stored elsewhere under `docs/` and label that source explicitly.
 Use the document for responsibilities, boundaries, dependency direction, public contracts,
 and accepted trade-offs. Follow only links relevant to the selected scope.
 
