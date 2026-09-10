@@ -1,6 +1,6 @@
 ---
 name: mikode-code-philosophy-review
-description: Review code against the MiKode coding philosophy. Use after implementation or refactoring to identify correctness issues, architectural coupling, unnecessary complexity, weak tests, avoidable technical debt, scope creep, and generated-code patterns. When architecture is the primary concern, delegate its deeper review to mikode-architecture-review when available. Produce prioritized, actionable findings without inventing problems merely to provide feedback.
+description: Review code against the MiKode coding philosophy. Use after implementation or refactoring to identify correctness issues, architectural coupling, unnecessary complexity, weak tests, avoidable technical debt, scope creep, and generated-code patterns. When architecture or security is the primary concern, delegate its deeper review to mikode-architecture-review or mikode-security-review when available. Produce prioritized, actionable findings without inventing problems merely to provide feedback.
 ---
 
 # Review code the MiKode way
@@ -25,8 +25,11 @@ When `mikode-architecture-review` is available and a change affects module bound
 public contracts, dependency direction, information hiding, or provider leakage, delegate
 that architectural depth to it. Keep this skill focused on implementation correctness and
 local code quality; retain only concrete code-level consequences here and avoid duplicating
-architecture-only findings. If the architecture skill is unavailable, review the relevant
-criteria here as a standalone fallback.
+architecture-only findings. Likewise, when `mikode-security-review` is available and a
+change touches authentication, secrets, untrusted input or execution, network boundaries,
+dependencies, CI workflows, or sandbox boundaries, delegate the adversarial security depth
+to it. If a specialist skill is unavailable, review the relevant criteria here as a
+standalone fallback.
 
 Review in this order: correctness, critical-path coverage, architectural
 boundaries, scope, maintainability, coupling and dependencies, simplicity,
