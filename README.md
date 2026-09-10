@@ -24,6 +24,9 @@ other compatible agents.
 - **mikode-architecture-review** — review responsibilities, boundaries, public contracts,
   and information hiding in a module, selected code, local changes, or a pull request,
   using the project's architecture documentation and relevant consumers.
+- **mikode-security-review** — review a module, selected code, local changes, or a pull
+  request for exploitable security defects and unsafe defaults across authentication,
+  secrets, untrusted input, network, supply chain, CI, and sandbox boundaries.
 
 ## Installation
 

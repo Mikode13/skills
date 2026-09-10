@@ -1,6 +1,6 @@
 ---
 name: mikode-code-philosophy-review
-description: Review code against the MiKode coding philosophy. Use after implementation or refactoring to identify correctness issues, architectural coupling, unnecessary complexity, weak tests, avoidable technical debt, scope creep, and generated-code patterns. When architecture is the primary concern, delegate its deeper review to mikode-architecture-review when available. Produce prioritized, actionable findings without inventing problems merely to provide feedback.
+description: Review code against the MiKode coding philosophy. Use after implementation or refactoring to identify correctness issues, architectural coupling, unnecessary complexity, weak tests, avoidable technical debt, scope creep, and generated-code patterns. When architecture or security is the primary concern, delegate its deeper review to mikode-architecture-review or mikode-security-review when available. Produce prioritized, actionable findings without inventing problems merely to provide feedback.
 ---
 
 # Review code the MiKode way
@@ -25,8 +25,11 @@ When `mikode-architecture-review` is available and a change affects module bound
 public contracts, dependency direction, information hiding, or provider leakage, delegate
 that architectural depth to it. Keep this skill focused on implementation correctness and
 local code quality; retain only concrete code-level consequences here and avoid duplicating
-architecture-only findings. If the architecture skill is unavailable, review the relevant
-criteria here as a standalone fallback.
+architecture-only findings. Likewise, when `mikode-security-review` is available and a
+change touches authentication, secrets, untrusted input or execution, network boundaries,
+dependencies, CI workflows, or sandbox boundaries, delegate the adversarial security depth
+to it. If a specialist skill is unavailable, review the relevant criteria here as a
+standalone fallback.
 
 Review in this order: correctness, critical-path coverage, architectural
 boundaries, scope, maintainability, coupling and dependencies, simplicity,
@@ -39,15 +42,17 @@ dominate the review.
 ## Finding severity
 
 - **BLOCKER** — the change should not be accepted as-is: incorrect behaviour,
-  broken public contract, security issue, data corruption risk, missing
-  critical error handling, important regression, a boundary violation that
-  creates significant coupling, or a test suite giving false confidence for
-  critical behaviour.
+  broken public contract, a severe security risk, data corruption risk,
+  missing critical error handling, important regression, a boundary
+  violation that creates significant coupling, or a test suite giving false
+  confidence for critical behaviour.
 - **SHOULD FIX** — meaningful design or maintainability problems to resolve
   before the change is complete: avoidable technical debt, infrastructure
   leaking into domain code, unnecessary public API exposure or dependency,
   weak tests for important behaviour, hard-to-reason-about mutation, scope
-  expansion that should be separated, artificial abstraction or indirection.
+  expansion that should be separated, artificial abstraction or indirection,
+  or a material security weakness of lesser impact, reach, or ease of
+  exploitation.
 - **SUGGESTION** — valuable but not required: better naming, small
   simplification, clearer signature, follow-up refactor outside the scope.
 
