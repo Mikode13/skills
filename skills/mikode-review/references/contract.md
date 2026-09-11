@@ -31,8 +31,9 @@ these normalized fields do not replace the diff, code, or source documents.
 direct user request, or a PR description that states the goal and acceptance criteria. Its
 `source` records which one. Its goal and acceptance criteria must suffice to assess the
 change. Constraints and non-goals may be empty when none are specified. `plan` and
-`pull_request` may be null for a local review. An unavailable plan is material only when required by policy or needed to
-resolve intent; report that reason instead of automatically blocking on every absent plan.
+`pull_request` may be null for a local review. An unavailable plan is material only when
+required by policy or needed to resolve intent; report that reason instead of automatically
+blocking on every absent plan.
 
 Scope names the exact comparison: immutable revisions, or an identifiable base and a
 captured working-tree snapshot including untracked files in scope. Empty `paths` means the
