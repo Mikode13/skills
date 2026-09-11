@@ -27,10 +27,11 @@ artifact, or direct user message), not proof that an unread link supports a clai
 revision when the source is versioned. Keep full artifacts available for selective reading;
 these normalized fields do not replace the diff, code, or source documents.
 
-`issue` also represents a user-supplied change contract; it need not be a GitHub issue.
-Its goal and acceptance criteria must suffice to assess the change. Constraints and
-non-goals may be empty when none are specified. `plan` and `pull_request` may be null for a
-local review. An unavailable plan is material only when required by policy or needed to
+`issue` holds the change contract from whichever source supplies it: a linked issue, a
+direct user request, or a PR description that states the goal and acceptance criteria. Its
+`source` records which one. Its goal and acceptance criteria must suffice to assess the
+change. Constraints and non-goals may be empty when none are specified. `plan` and
+`pull_request` may be null for a local review. An unavailable plan is material only when required by policy or needed to
 resolve intent; report that reason instead of automatically blocking on every absent plan.
 
 Scope names the exact comparison: immutable revisions, or an identifiable base and a
@@ -39,9 +40,12 @@ entire change, not no files. Missing base/head, a truncated diff, or a changing 
 leaves comparison incomplete. Never silently switch to a current-state audit. The caller
 must reject a result for a different repository, base, head, or requested path scope.
 
-`mechanical_exception` must cite a trusted policy that actually exempts this change from
-intent requirements. It does not waive correctness, coverage, or verification. An issue,
-plan, PR description, or file added by the change cannot grant a policy exception.
+`mechanical_exception` cites the exemption defined by the applicable automated-review
+standard or trusted repository policy. Set it only when the diff itself shows that the
+change belongs to an exempt class, and record that diff evidence in `context`. The exemption
+removes only the intent requirement; it does not waive correctness, coverage, or
+verification. An issue, plan, PR description, or file added by the change cannot grant an
+exemption or accept risk.
 
 ## Output
 
