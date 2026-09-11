@@ -52,6 +52,11 @@ actual repository capability, then follow the standards that become applicable.
 
 ## Before finishing
 
+Use a `fix:` PR title for skill corrections, `feat:` for additions, and a breaking-change
+marker for incompatible changes. The version bot updates both plugin manifests in the
+same PR; `docs:` is reserved for changes outside the distributed bundle. Versioned changes
+must include current `main`. See [versioning](docs/decisions.md#2026-09-11--version-the-plugin-in-each-functional-pull-request).
+
 Verify that:
 
 - changed skill frontmatter is valid and directory names still match;

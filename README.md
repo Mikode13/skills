@@ -58,6 +58,13 @@ The equivalent Claude Code in-session commands are `/plugin marketplace add …`
 For the desktop app of either tool, restart the app, open the Plugins Directory, select the
 MiKode Skills marketplace, and install the `mikode-skills` plugin.
 
+### Updating an installed plugin
+
+Refresh the MiKode marketplace and use the host's plugin update action, then start a new
+session. Both host manifests carry the same version; releases are listed in
+[GitHub Releases](https://github.com/Mikode13/skills/releases). Direct skill symlinks use
+the Git update procedure below instead.
+
 ### Install individual skills directly
 
 Clone the repository once, then link only the skills you want. This example installs
