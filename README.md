@@ -21,6 +21,9 @@ other compatible agents.
   refactoring production code.
 - **mikode-code-philosophy-review** — review a change against the MiKode coding philosophy
   and report evidence-backed findings by severity.
+- **mikode-review** — coordinate a complete PR or local-change review across five
+  perspectives, load specialist guidance by risk, and verify findings before returning
+  `clean`, `blocked`, or `incomplete`.
 - **mikode-architecture-review** — review responsibilities, boundaries, public contracts,
   and information hiding in a module, selected code, local changes, or a pull request,
   using the project's architecture documentation and relevant consumers.

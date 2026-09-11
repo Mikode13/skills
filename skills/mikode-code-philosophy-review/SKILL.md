@@ -21,6 +21,10 @@ Before reviewing:
 
 ## Review priorities
 
+When called by `mikode-review`, reuse its supplied context and return candidates for the
+assigned scope. The caller owns specialist routing, final verification, severity, and
+deduplication; do not start a second orchestration or repeat work already assigned there.
+
 When `mikode-architecture-review` is available and a change affects module boundaries,
 public contracts, dependency direction, information hiding, or provider leakage, delegate
 that architectural depth to it. Keep this skill focused on implementation correctness and
