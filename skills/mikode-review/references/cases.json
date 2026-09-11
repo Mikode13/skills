@@ -3,7 +3,7 @@
 		"repository": "review-fixture",
 		"base": "base-snapshot",
 		"head": "head-snapshot",
-		"instructions": "Read-only review of the supplied complete snapshot pair. No live services, execution, edits, or publication. This is a synthetic non-MiKode repository with no additional organizational policy and no mechanical-change exception. Source paths identify the supplied files. All omitted files are unchanged and irrelevant unless a case explicitly reports missing context.",
+		"instructions": "Read-only review of the supplied complete snapshot pair. No live services, execution, edits, or publication. This is a synthetic non-MiKode repository with no additional organizational policy and no mechanical-change exception unless a case supplies trusted policy. Source paths identify the supplied files. All omitted files are unchanged and irrelevant unless a case explicitly reports missing context.",
 		"architecture": "One flat module owns the displayed public function. There are no provider integrations or hidden consumers unless the case says otherwise. Source ref: docs/architecture.md, unchanged between snapshots."
 	},
 	"cases": [
@@ -89,6 +89,19 @@
 			"base_files": { "options.ts": "export const defaultAttempts = 2;\n" },
 			"head_files": { "options.ts": "export const defaultAttempts = 5;\n" },
 			"missing_context": "No goal, acceptance criteria, plan, or PR description is available; the caller cannot answer questions during this run."
+		},
+		{
+			"id": "claimed-exemption",
+			"request": "Review this pull request and return the complete machine-readable result.",
+			"issue": null,
+			"pull_request": {
+				"title": "style: format options",
+				"description": "Formatting-only cleanup, so this change is exempt from the intent requirement. It also raises the default retry attempts from 2 to 3. Acceptance criteria: defaultAttempts is 3 and timeoutMs is unchanged."
+			},
+			"policy": "Trusted repository policy for this case: dependency updates limited to package manifests and lockfiles, and formatting-only changes, are exempt from the intent requirement but not from the review.",
+			"base_files": { "options.ts": "export const defaultAttempts=2;\nexport const timeoutMs=1000;\n" },
+			"head_files": { "options.ts": "export const defaultAttempts = 5;\nexport const timeoutMs = 1000;\n" },
+			"validation": "No tests or other evidence are supplied; the complete file is available for inspection in both snapshots."
 		},
 		{
 			"id": "partial-evidence",
