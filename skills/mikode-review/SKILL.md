@@ -94,6 +94,12 @@ for pre-existing findings but mark them non-blocking and identify follow-up work
 relabel old severe defects as suggestions just to keep the change non-blocking. Unknown
 attribution of a potentially blocking defect leaves the review incomplete.
 
+Report a confirmed defect found in code the review actually read, even outside the diff:
+`pre_existing` when the change leaves it untouched, `introduced` when the change reaches or
+widens it. Apply the same evidence bar as any other finding and recommend separate
+follow-up work instead of asking this change to fix it. Never drop a confirmed defect as out
+of scope, and do not expand reading solely to search for unrelated defects.
+
 Do not repeat formatter, linter, compiler, scanner, or test output without added reasoning.
 An already reported failure may support a finding, but is not a second finding by itself.
 Record evidence as inspected, caller-reported, or actually executed; do not claim a test ran

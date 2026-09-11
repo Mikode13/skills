@@ -89,7 +89,8 @@ Every `Finding` contains:
 - `id`: unique non-empty string within this result.
 - `severity`: `BLOCKER`, `SHOULD FIX`, `SUGGESTION`, or null only if classification is unavailable.
 - `origin`: `introduced`, `pre_existing`, or `unknown`. Widened exposure is introduced;
-  unchanged debt is pre-existing even when its line appears in the diff.
+  unchanged debt is pre-existing even when its line appears in the diff or lies in
+  unchanged code read outside it.
 - `blocking`: boolean derived from verified severity and origin, never from perspective count.
 - `title`, `problem`, `consequence`, `recommended_direction`: non-empty strings.
 - `location`: `{ path: string, revision: string or null, line: positive integer or null, symbol: string or null }`.

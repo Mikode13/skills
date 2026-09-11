@@ -44,6 +44,22 @@
 			"validation": "Tests cover below/above maximum identically in both snapshots; the absence of an equality test is unchanged."
 		},
 		{
+			"id": "unrelated-defect",
+			"request": "Review this change and return the complete machine-readable result.",
+			"issue": "Collapse repeated internal spaces in labels in addition to trimming them. Preserve the exported format signature and add a regression test for the new behavior.",
+			"base_files": {
+				"format.ts": "export const format = (label: string): string => label.trim();\n",
+				"format.test.ts": "import { expect, test } from 'vitest';\nimport { format } from './format';\ntest('trims labels', () => { expect(format(' hello ')).toBe('hello'); });\n",
+				"menu.ts": "import { format } from './format';\nexport const firstTitle = (labels: string[]): string | undefined => format(labels[1]);\n"
+			},
+			"head_files": {
+				"format.ts": "export const format = (label: string): string => label.trim().replace(/\\s+/g, ' ');\n",
+				"format.test.ts": "import { expect, test } from 'vitest';\nimport { format } from './format';\ntest('trims labels', () => { expect(format(' hello ')).toBe('hello'); });\ntest('collapses internal spaces', () => { expect(format(' a   b ')).toBe('a b'); });\n",
+				"menu.ts": "import { format } from './format';\nexport const firstTitle = (labels: string[]): string | undefined => format(labels[1]);\n"
+			},
+			"validation": "Format tests are supplied and reported green for the head, not executed by this reviewer. menu.ts is unchanged and supplied because it consumes format."
+		},
+		{
 			"id": "two-observations",
 			"request": "Review the change and verify these initial observations before returning the complete machine-readable result.",
 			"issue": "Retain the inclusive maximum rule and the existing public signature while renaming the local parameter.",
