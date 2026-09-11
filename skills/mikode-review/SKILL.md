@@ -91,9 +91,11 @@ After discovery, revisit each candidate independently of its initial wording:
    does not make two independent defects duplicates; one defect may affect several perspectives.
 5. Assign final severity using the shared
    [rubric](../mikode-code-philosophy-review/SKILL.md#finding-severity) and
-   [evidence rules](../mikode-code-philosophy-review/SKILL.md#evidence-and-questions).
-   Specialist severities are provisional, not votes. If no trusted rubric can be read,
-   preserve evidence without classification and return `incomplete`.
+   [evidence rules](../mikode-code-philosophy-review/SKILL.md#evidence-and-questions),
+   together with the domain calibration of any specialist loaded for the finding, such as
+   the security skill's joint judgment of impact, reach, and exploitability. Specialist
+   severities are provisional, not votes. If no trusted rubric can be read, preserve
+   evidence without classification and return `incomplete`.
 
 Only confirmed, introduced `BLOCKER` or `SHOULD FIX` findings block. Preserve real severity
 for pre-existing findings but mark them non-blocking and identify follow-up work. Do not

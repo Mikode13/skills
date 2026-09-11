@@ -103,9 +103,10 @@ Every `Finding` contains:
 - `evidence`: a non-empty `Evidence[]` supporting the consequence and attribution.
 
 Reference each finding in at least one perspective. Assign final severity with the shared
-rubric; do not keep competing specialist ratings. If classification is unavailable, keep
-the confirmed evidence, set severity to null and blocking to false, and add a limitation.
-This cannot produce clean. Redact secret values while preserving safe source coordinates.
+rubric and the domain calibration of any loaded specialist; do not keep competing specialist
+ratings. If classification is unavailable, keep the confirmed evidence, set severity to null
+and blocking to false, and add a limitation. This cannot produce clean. Redact secret values
+while preserving safe source coordinates.
 
 Every `Verification` contains `candidate_id: string`, `disposition: confirmed or duplicate
 or rejected or unresolved`, `finding_id: string or null`, `reason: string`, and
