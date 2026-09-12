@@ -1,12 +1,16 @@
 ---
 name: mikode-context
-description: Load the current MiKode engineering context into the session - active standards, accepted and proposed ADRs, and conventions. Use at the start of work in any MiKode repository, or when the user asks what the current MiKode standards or decisions are.
+description: Resolve current MiKode policy for a task or explain relevant decision history. Use when applicable standards are unknown, the user asks about MiKode policy or decisions, or another skill delegates a policy lookup. Routine local work with resolved policy does not need another lookup.
 ---
 
-# Load MiKode engineering context
+# Resolve MiKode policy
 
-Bring the current MiKode engineering state into the session without relying on a stale
-local branch.
+Resolve the current MiKode policy needed for the task without relying on a stale local
+branch.
+
+Start from the caller's task, repository capabilities, and policy question. Reuse current
+sources and revisions already resolved for this task; read additional policy when scope
+changes. Do not infer Node.js or other capabilities from the MiKode name alone.
 
 ## 1. Load the latest engineering main
 
@@ -17,12 +21,19 @@ currently checked-out branch.
 If the local checkout cannot fetch the latest `origin/main`, clone `Mikode13/engineering`
 to a temporary directory and read its `main` branch there.
 
+A repository connector can instead resolve the latest `main` and read the needed files at
+that revision without a clone. If current policy cannot be retrieved, report that limit;
+do not present a cached copy as verified current policy.
+
 The latest `Mikode13/engineering` `main` is authoritative.
 
 ## 2. Read the indexes, then only relevant documents
 
-Read `adr/README.md` and `standards/README.md` first. Use the root README only when its
-navigation or repository-specific context is useful.
+For current requirements, read `standards/README.md`, then only applicable Active standards.
+Read `adr/README.md` when the user asks about decision history or proposals, or when
+reasoning is needed to interpret a rule. A directly linked relevant ADR can be read
+without loading the full history index. Use the root README only when its navigation or
+repository-specific context is useful.
 
 Read in full only the documents relevant to the task:
 
@@ -44,4 +55,4 @@ full compliance audit, use `standards-check` rather than maintaining a second fi
 checklist in this skill.
 
 Keep the summary short and link to authoritative documents instead of reproducing them.
-Apply the active standards for the rest of the session.
+Apply the active standards for the remaining work within the task scope.

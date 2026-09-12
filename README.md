@@ -6,9 +6,12 @@ other compatible agents.
 
 ## Skills
 
+- **mikode-router** — select and order the minimum skills for a task before loading their
+  bodies; see [routing and proposed adoption](docs/skill-routing.md).
 - **mikode-init** — create a MiKode repository from the current engineering standards,
   applying only the standards that match the project.
-- **mikode-context** — load the current MiKode engineering context into a session.
+- **mikode-context** — resolve applicable current policy or relevant decision history
+  for a specific task.
 - **adr-new** — create a new Architecture Decision Record through a guided interview,
   publish it behind a Draft pull request for safe review, and finalize it after one
   explicit user approval.
