@@ -18,7 +18,7 @@ jobs:
     if: >-
       !github.event.pull_request.draft &&
       github.event.pull_request.head.repo.full_name == github.repository
-    uses: Mikode13/.github/.github/workflows/plugin-version.yml@b682c98075a68c9041f1efbf0dbe5a927e688d3f
+    uses: Mikode13/.github/.github/workflows/plugin-version.yml@7de844406ef0a416ff51bb0440bcce0722a327ed
     with:
       client_id: ${{ vars.MIKODE_SKILLS_VERSION_APP_CLIENT_ID }}
     secrets:
