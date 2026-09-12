@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+    types: [opened, synchronize, reopened, edited, ready_for_review]
   push:
     branches:
       - main
@@ -18,6 +19,7 @@ concurrency:
 jobs:
   ci:
     name: CI
-    uses: Mikode13/.github/.github/workflows/ci.yml@813d80713d5aa375023421674719267028aa01e5
+    uses: Mikode13/.github/.github/workflows/ci.yml@7de844406ef0a416ff51bb0440bcce0722a327ed
     with:
       documentation: true
+      documentation_plugin_versions: true

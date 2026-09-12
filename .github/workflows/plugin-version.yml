@@ -1,0 +1,25 @@
+name: Plugin version
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: plugin-version-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    if: >-
+      !github.event.pull_request.draft &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    uses: Mikode13/.github/.github/workflows/plugin-version.yml@7de844406ef0a416ff51bb0440bcce0722a327ed
+    with:
+      client_id: ${{ vars.MIKODE_SKILLS_VERSION_APP_CLIENT_ID }}
+    secrets:
+      private_key: ${{ secrets.MIKODE_SKILLS_VERSION_APP_PRIVATE_KEY }}

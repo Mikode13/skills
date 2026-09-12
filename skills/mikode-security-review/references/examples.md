@@ -10,9 +10,9 @@ Request: review a PR that adds a web service endpoint returning commit history f
 repository.
 
 ```ts
-app.get("/history", (req, res) => {
-  const output = execSync(`git log --oneline ${req.query.ref}`).toString();
-  res.send(output);
+app.get('/history', (req, res) => {
+	const output = execSync(`git log --oneline ${req.query.ref}`).toString();
+	res.send(output);
 });
 ```
 

@@ -11,7 +11,7 @@ execute agents independently of their provider.
 
 ```ts
 interface Agent {
-  run(input: Request): Promise<VendorResponse>;
+	run(input: Request): Promise<VendorResponse>;
 }
 ```
 

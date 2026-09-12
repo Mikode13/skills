@@ -58,6 +58,32 @@ The equivalent Claude Code in-session commands are `/plugin marketplace add …`
 For the desktop app of either tool, restart the app, open the Plugins Directory, select the
 MiKode Skills marketplace, and install the `mikode-skills` plugin.
 
+### Updating skills
+
+For a **Claude Code plugin installation**, refresh the marketplace and update the plugin:
+
+```sh
+claude plugin marketplace update mikode
+claude plugin update mikode-skills@mikode
+```
+
+The equivalent in-session commands start with `/plugin` instead of `claude plugin`.
+
+For a **Codex plugin installation**, start Codex, run `/plugins`, open the installed
+`mikode-skills` plugin, and select its update action. In the desktop app, use the
+**Installed** section of the Plugins Directory instead.
+
+Start a new session after either host finishes updating so it loads the new skill bundle.
+Both host manifests carry the same version; published versions and release notes are listed
+in [GitHub Releases](https://github.com/Mikode13/skills/releases).
+
+For **skills linked directly from a clone**, update that clone without reinstalling the
+links:
+
+```sh
+git -C /path/to/mikode-skills pull --ff-only
+```
+
 ### Install individual skills directly
 
 Clone the repository once, then link only the skills you want. This example installs
