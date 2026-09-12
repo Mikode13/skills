@@ -3,10 +3,10 @@ name: mikode-context
 description: Resolve current MiKode policy for a task or explain relevant decision history. Use when applicable standards are unknown, the user asks about MiKode policy or decisions, or another skill delegates a policy lookup. Routine local work with resolved policy does not need another lookup.
 ---
 
-# Load MiKode engineering context
+# Resolve MiKode policy
 
-Bring the current MiKode engineering state into the session without relying on a stale
-local branch.
+Resolve the current MiKode policy needed for the task without relying on a stale local
+branch.
 
 Start from the caller's task, repository capabilities, and policy question. Reuse current
 sources and revisions already resolved for this task; read additional policy when scope
@@ -55,4 +55,4 @@ full compliance audit, use `standards-check` rather than maintaining a second fi
 checklist in this skill.
 
 Keep the summary short and link to authoritative documents instead of reproducing them.
-Apply the active standards for the rest of the session.
+Apply the active standards for the remaining work within the task scope.
