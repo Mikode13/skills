@@ -94,8 +94,11 @@ After discovery, revisit each candidate independently of its initial wording:
    [evidence rules](../mikode-code-philosophy-review/SKILL.md#evidence-and-questions),
    together with the domain calibration of any specialist loaded for the finding, such as
    the security skill's joint judgment of impact, reach, and exploitability. Specialist
-   severities are provisional, not votes. If no trusted rubric can be read, preserve
-   evidence without classification and return `incomplete`.
+   severities are provisional, not votes. An introduced finding that shows an explicit
+   acceptance criterion of the change contract unmet, or met only in part, is at least
+   `SHOULD FIX`: a change that does not deliver what its contract states is not complete,
+   whatever the rubric would assign the defect on its own. If no trusted rubric can be read,
+   preserve evidence without classification and return `incomplete`.
 
 Only confirmed, introduced `BLOCKER` or `SHOULD FIX` findings block. Preserve real severity
 for pre-existing findings but mark them non-blocking and identify follow-up work. Do not
