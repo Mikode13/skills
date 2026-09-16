@@ -126,6 +126,8 @@ or `undetermined`. A present one points to the final finding that describes the 
 with its current location and severity, so the caller keeps one conversation per defect.
 When this review discovers a defect an earlier finding describes, link it that way instead
 of reporting it as new. An earlier `BLOCKER` that cannot be decided is a limitation.
+An earlier finding without a classified severity that cannot be decided is also a limitation:
+it may still describe blocking harm, so the review cannot safely clear it.
 
 ## Write for a reader who has the diff open
 

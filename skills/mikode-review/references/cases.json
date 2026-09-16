@@ -227,6 +227,28 @@
 			"validation": "The author reports that both tests pass on the reviewed head."
 		},
 		{
+			"id": "unclassified-recheck",
+			"request": "Review this pull request again, recheck the finding an earlier review reported, and return the complete machine-readable result.",
+			"issue": "Correct the product spelling from MiCode to MiKode in the README title. No other content or behavior should change.",
+			"base_files": { "README.md": "# MiCode\n\nA cache service.\n" },
+			"head_files": { "README.md": "# MiKode\n\nA cache service.\n" },
+			"earlier_findings": [
+				{
+					"key": "earlier-unknown",
+					"severity": null,
+					"title": "Cache invalidation retains stale permission entries",
+					"problem": "The earlier review established that invalidation retained permission entries but lacked the consumer and runtime evidence needed to classify the harm.",
+					"location": {
+						"path": "src/cache.ts",
+						"revision": "earlier-snapshot",
+						"line": null,
+						"symbol": "invalidate"
+					}
+				}
+			],
+			"missing_context": "The cache implementation and runtime evidence needed to decide the earlier finding are unavailable. Only the complete README snapshots are supplied."
+		},
+		{
 			"id": "claimed-fix",
 			"request": "Review this pull request again after the author's new commit, recheck the findings an earlier review reported, and return the complete machine-readable result.",
 			"issue": "Let the download route archive the reports directory under a name the client chooses. Acceptance criteria: GET /download?name=<name> writes <name>.tgz containing reports.",
