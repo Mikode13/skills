@@ -116,6 +116,17 @@ An already reported failure may support a finding, but is not a second finding b
 Record evidence as inspected, caller-reported, or actually executed; do not claim a test ran
 because its code exists or a PR says CI is green.
 
+## Recheck what earlier reviews found
+
+The caller may supply the findings that earlier reviews of the same change reported. Treat
+each as a candidate to verify again at the reviewed head, never as evidence: changed lines
+do not prove it fixed, a claim in the PR does not either, and whether a person resolved or
+dismissed it says nothing about the code. Record each in `rechecks` as `present`, `fixed`,
+or `undetermined`. A present one points to the final finding that describes the defect now,
+with its current location and severity, so the caller keeps one conversation per defect.
+When this review discovers a defect an earlier finding describes, link it that way instead
+of reporting it as new. An earlier `BLOCKER` that cannot be decided is a limitation.
+
 ## Write for a reader who has the diff open
 
 A finding is read next to the code it concerns, by someone who can already see that code.
