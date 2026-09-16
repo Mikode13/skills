@@ -39,8 +39,11 @@ blocking on every absent plan.
 
 `earlier_findings` holds the findings that earlier reviews of the same change reported, as
 those reviews wrote them, each under a `key` the caller keeps stable from one review to the
-next. It is empty for a first review. Supply only what the earlier review wrote: whether a
-person resolved or dismissed a finding, and any reply to it, is not evidence about the code.
+next. Keys must be unique within the normalized input, and two different findings must never
+share one. The caller decides how to deduplicate repeated copies of the same finding before
+normalization. It is empty for a first review. Supply only what the earlier review wrote:
+whether a person resolved or dismissed a finding, and any reply to it, is not evidence about
+the code.
 
 Scope names the exact comparison: immutable revisions, or an identifiable base and a
 captured working-tree snapshot including untracked files in scope. Empty `paths` means the
@@ -137,8 +140,8 @@ head and points to the final finding that describes it now, with its current loc
 severity; several earlier findings may point to the same one. `fixed` and `undetermined`
 use null. The reason, in one sentence, names what still causes the defect, what removed it,
 or what is needed to decide. A final finding that describes an earlier finding's defect is
-linked through that recheck, not reported as unrelated. An undetermined earlier `BLOCKER`
-is material and requires a limitation.
+linked through that recheck, not reported as unrelated. An undetermined earlier finding
+whose severity is `BLOCKER` or null is material and requires a limitation.
 
 Every `Question` contains `question: string`, `perspective: one perspective key`, and
 `prevents_completion: boolean`. If true, add a matching limitation. Questions carry no
@@ -157,9 +160,9 @@ then enforce these rules in order:
 1. Set a finding's `blocking` to true exactly when its verified severity is `BLOCKER`.
    Origin and relevance never make a finding blocking or non-blocking.
 2. Return `incomplete` if any perspective is incomplete, a material limitation or unresolved
-   candidate remains, a required source is missing, or a finding has no severity. Retain
-   verified findings; incomplete takes precedence over the other outcomes, not over the
-   evidence already gathered.
+   candidate remains, an earlier `BLOCKER` or unclassified finding is undetermined, a required
+   source is missing, or a finding has no severity. Retain verified findings; incomplete takes
+   precedence over the other outcomes, not over the evidence already gathered.
 3. Otherwise return `blocked` if any finding has `blocking: true`.
 4. Otherwise return `concerns` if any `change` finding is `SHOULD FIX`.
 5. Otherwise return `suggestions` if any `change` finding is `SUGGESTION`.
