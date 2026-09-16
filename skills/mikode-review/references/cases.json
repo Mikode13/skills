@@ -198,8 +198,8 @@
 			"id": "precondition-defect",
 			"request": "Review this local change and return the complete machine-readable result.",
 			"issue": "Report the monthly cost of completed runs. Acceptance criteria: monthlyCost returns the sum of costUsd over every completed run.",
-			"base_files": { "runs.ts": "export interface Run {\n\tcostUsd: number;\n\tfailed: boolean;\n}\n\n/** Every run that completed. */\nexport const completedRuns = (runs: Run[]): Run[] =>\n\truns.filter((run, index) => index > 0 && !run.failed);\n" },
-			"head_files": { "runs.ts": "export interface Run {\n\tcostUsd: number;\n\tfailed: boolean;\n}\n\n/** Every run that completed. */\nexport const completedRuns = (runs: Run[]): Run[] =>\n\truns.filter((run, index) => index > 0 && !run.failed);\n", "cost.ts": "import { completedRuns, type Run } from './runs';\n\nexport const monthlyCost = (runs: Run[]): number =>\n\tcompletedRuns(runs).reduce((total, run) => total + run.costUsd, 0);\n" },
+			"base_files": { "runs.ts": "export interface Run {\n\tcostUsd: number;\n\tattempts: number;\n\tfailed: boolean;\n}\n\n/** Every run that completed. */\nexport const completedRuns = (runs: Run[]): Run[] =>\n\truns.filter(run => !run.failed && run.attempts === 1);\n" },
+			"head_files": { "runs.ts": "export interface Run {\n\tcostUsd: number;\n\tattempts: number;\n\tfailed: boolean;\n}\n\n/** Every run that completed. */\nexport const completedRuns = (runs: Run[]): Run[] =>\n\truns.filter(run => !run.failed && run.attempts === 1);\n", "cost.ts": "import { completedRuns, type Run } from './runs';\n\nexport const monthlyCost = (runs: Run[]): number =>\n\tcompletedRuns(runs).reduce((total, run) => total + run.costUsd, 0);\n" },
 			"validation": "No tests were supplied."
 		},
 		{

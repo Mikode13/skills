@@ -57,7 +57,7 @@ collections; use null only where declared. Do not add provider-specific fields.
 | -------------- | --------------------------------------------------------------------------------------- |
 | `version`      | Integer `2`.                                                                            |
 | `scope`        | The input `Scope`, including nulls if unresolved.                                       |
-| `outcome`      | `clean`, `changes_requested`, `blocked`, or `incomplete`. Derived below.                |
+| `outcome`      | `clean`, `suggestions`, `concerns`, `blocked`, or `incomplete`. Derived below.          |
 | `perspectives` | Object with exactly the five keys below, each a `Perspective`.                          |
 | `findings`     | `Finding[]`: only verified findings, deduplicated and ordered by severity.              |
 | `verification` | `Verification[]`: dispositions for discovered candidates. Empty when none arose.        |
@@ -143,13 +143,14 @@ then enforce these rules in order:
    verified findings; incomplete takes precedence over the other outcomes, not over the
    evidence already gathered.
 3. Otherwise return `blocked` if any finding has `blocking: true`.
-4. Otherwise return `changes_requested` if any `change` finding is `SHOULD FIX`.
-5. Otherwise return `clean`, even if suggestions or incidental findings remain.
+4. Otherwise return `concerns` if any `change` finding is `SHOULD FIX`.
+5. Otherwise return `suggestions` if any `change` finding is `SUGGESTION`.
+6. Otherwise return `clean`, even if incidental findings remain.
 
 Before emission, check that scope still matches, all five perspectives are present, every
 candidate has one disposition, findings are not duplicated, severity agrees with blocking
 status, and origin and severity agree with relevance. A clean result must have no incomplete
-perspective, material limitation, blocking finding, or `change` finding that is `SHOULD FIX`.
+perspective, material limitation, blocking finding, or `change` finding.
 Check that a non-applicable perspective has a supported reason and no findings.
 
 The caller must validate both shape and these semantics before trusting a result. Empty,

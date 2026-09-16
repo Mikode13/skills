@@ -48,16 +48,18 @@ dominate the review.
 Severity measures the harm a defect does once merged, not where it was found or who
 introduced it.
 
-- **BLOCKER** — merging it would cause serious harm beyond wrong behaviour: an
-  exploitable security weakness such as injection, broken authentication or
-  authorization, exposed secrets, unsafe execution of untrusted input, or a
-  compromised dependency or build; loss or corruption of data; or a defect that
-  can cause financial loss. A bug whose worst effect is incorrect or missing
-  behaviour is not a BLOCKER.
-- **SHOULD FIX** — something is broken and has to be fixed: incorrect behaviour,
-  a regression, a broken public contract, missing error handling that produces
-  wrong results, a test that gives false confidence in the behaviour it claims,
-  or a material security weakness of lesser impact, reach, or ease of
+- **BLOCKER** — merging it would cause serious harm: an exploitable security
+  weakness such as injection, broken authentication or authorization, exposed
+  secrets, unsafe execution of untrusted input, or a compromised dependency or
+  build; loss or corruption of data; financial loss; a severe architecture
+  failure, such as a broken public contract that other code depends on; or broken
+  core logic, where the behaviour a feature exists to provide does not work in
+  normal use.
+- **SHOULD FIX** — something is broken, but its harm is bounded: behaviour that
+  fails only under particular conditions or inputs, a wrong result of limited
+  consequence, a regression in a secondary path, missing error handling that
+  produces wrong results, a test that gives false confidence in the behaviour it
+  claims, or a material security weakness of lesser impact, reach, or ease of
   exploitation.
 - **SUGGESTION** — nothing is broken, but the code would be better or easier to
   change: naming, simplification, a clearer signature, reduced coupling,

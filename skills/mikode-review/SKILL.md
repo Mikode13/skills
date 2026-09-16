@@ -1,6 +1,6 @@
 ---
 name: mikode-review
-description: Review a pull request or local change against its issue or change contract, implementation plan, and repository behavior. Use for a complete review requested from chat, a harness, or CI; coordinate five perspectives, load specialist guidance by risk, verify findings, and return clean, changes_requested, blocked, or incomplete. Use a specialist directly for a code-only, architecture-only, or security-only review.
+description: Review a pull request or local change against its issue or change contract, implementation plan, and repository behavior. Use for a complete review requested from chat, a harness, or CI; coordinate five perspectives, load specialist guidance by risk, verify findings, and return clean, suggestions, concerns, blocked, or incomplete. Use a specialist directly for a code-only, architecture-only, or security-only review.
 ---
 
 # Review a change the MiKode way
@@ -135,9 +135,9 @@ one or two sentences each. A short review of a small change is complete, not thi
 
 Apply the contract's aggregation rules: unresolved material review work takes precedence
 as `incomplete`, retaining confirmed findings; otherwise use `blocked` if any finding
-blocks, `changes_requested` if a `change` finding is `SHOULD FIX`, or `clean`. Clean
-describes this review of this change, not the whole repository. Keep all five perspective
-results visible even when there are no findings.
+blocks, `concerns` if a `change` finding is `SHOULD FIX`, `suggestions` if a `change`
+finding is `SUGGESTION`, or `clean`. Clean describes this review of this change, not the
+whole repository. Keep all five perspective results visible even when there are no findings.
 
 In interactive use, show confirmed findings first with the shared reviewer format, origin,
 relevance, blocking status, evidence, and recommended direction. Then show the five
