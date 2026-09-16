@@ -55,9 +55,9 @@ collections; use null only where declared. Do not add provider-specific fields.
 
 | Field          | Type and meaning                                                                        |
 | -------------- | --------------------------------------------------------------------------------------- |
-| `version`      | Integer `1`.                                                                            |
+| `version`      | Integer `2`.                                                                            |
 | `scope`        | The input `Scope`, including nulls if unresolved.                                       |
-| `outcome`      | `clean`, `blocked`, or `incomplete`. Derived below, never a free choice.                |
+| `outcome`      | `clean`, `changes_requested`, `blocked`, or `incomplete`. Derived below.                |
 | `perspectives` | Object with exactly the five keys below, each a `Perspective`.                          |
 | `findings`     | `Finding[]`: only verified findings, deduplicated and ordered by severity.              |
 | `verification` | `Verification[]`: dispositions for discovered candidates. Empty when none arose.        |
@@ -80,7 +80,7 @@ Every `Perspective` contains:
 
 - `depth`: `baseline` or `deep`; deep means additional targeted analysis, not another agent.
 - `coverage`: `complete`, `incomplete`, or `not_applicable`.
-- `reason`: non-empty evidence-based explanation of routing and coverage.
+- `reason`: one or two sentences of evidence-based explanation of routing and coverage.
 - `skills`: names of specialist skills actually used, as `string[]`.
 - `finding_ids`: unique IDs from `findings` that affect this perspective, as `string[]`.
 
@@ -96,7 +96,12 @@ Every `Finding` contains:
 - `origin`: `introduced`, `pre_existing`, or `unknown`. Widened exposure is introduced;
   unchanged debt is pre-existing even when its line appears in the diff or lies in
   unchanged code read outside it.
-- `blocking`: boolean derived from verified severity and origin, never from perspective count.
+- `relevance`: `change` or `incidental`. A finding is `change` when its origin is
+  `introduced` or `unknown`, or when a pre-existing problem keeps the change from achieving
+  its goal or an acceptance criterion. Any other pre-existing finding is `incidental`, and a
+  pre-existing `SUGGESTION` always is.
+- `blocking`: true exactly when the verified severity is `BLOCKER`, whatever the origin or
+  relevance.
 - `title`, `problem`, `consequence`, `recommended_direction`: non-empty strings.
 - `location`: `{ path: string, revision: string or null, line: positive integer or null, symbol: string or null }`.
   Use a precise symbol when line numbers are unavailable; never invent coordinates.
@@ -131,22 +136,24 @@ material in context, not as a completion-preventing limitation.
 Validate types, required fields, enums, unique IDs, source coordinates, and cross-references,
 then enforce these rules in order:
 
-1. Set a finding's `blocking` to true only when its origin is `introduced` and its verified
-   severity is `BLOCKER` or `SHOULD FIX`. Pre-existing findings and suggestions never block.
+1. Set a finding's `blocking` to true exactly when its verified severity is `BLOCKER`.
+   Origin and relevance never make a finding blocking or non-blocking.
 2. Return `incomplete` if any perspective is incomplete, a material limitation or unresolved
-   candidate remains, a required source is missing, a finding has no severity, or a
-   potentially blocking finding has unknown origin. Retain verified blocking findings;
-   incomplete takes precedence over blocked, not over the evidence already gathered.
+   candidate remains, a required source is missing, or a finding has no severity. Retain
+   verified findings; incomplete takes precedence over the other outcomes, not over the
+   evidence already gathered.
 3. Otherwise return `blocked` if any finding has `blocking: true`.
-4. Otherwise return `clean`, even if non-blocking pre-existing findings or suggestions remain.
+4. Otherwise return `changes_requested` if any `change` finding is `SHOULD FIX`.
+5. Otherwise return `clean`, even if suggestions or incidental findings remain.
 
 Before emission, check that scope still matches, all five perspectives are present, every
-candidate has one disposition, findings are not duplicated, and severity/origin agree with
-blocking status. A clean result must have no incomplete perspective or material limitation.
+candidate has one disposition, findings are not duplicated, severity agrees with blocking
+status, and origin and severity agree with relevance. A clean result must have no incomplete
+perspective, material limitation, blocking finding, or `change` finding that is `SHOULD FIX`.
 Check that a non-applicable perspective has a supported reason and no findings.
 
 The caller must validate both shape and these semantics before trusting a result. Empty,
 malformed, interrupted, contradictory, or unverified output is an incomplete execution;
 never reinterpret missing fields as a clean review. A self-check is not proof of behavior.
-Publication and merge-policy handling remain outside this contract, particularly for
-non-blocking pre-existing findings whose severity must not become an automatic merge veto.
+Publication and merge-policy handling remain outside this contract: the caller decides how
+`change` and `incidental` findings reach people and how a `blocked` result prevents a merge.

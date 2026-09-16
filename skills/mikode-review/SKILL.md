@@ -1,6 +1,6 @@
 ---
 name: mikode-review
-description: Review a pull request or local change against its issue or change contract, implementation plan, and repository behavior. Use for a complete review requested from chat, a harness, or CI; coordinate five perspectives, load specialist guidance by risk, verify findings, and return clean, blocked, or incomplete. Use a specialist directly for a code-only, architecture-only, or security-only review.
+description: Review a pull request or local change against its issue or change contract, implementation plan, and repository behavior. Use for a complete review requested from chat, a harness, or CI; coordinate five perspectives, load specialist guidance by risk, verify findings, and return clean, changes_requested, blocked, or incomplete. Use a specialist directly for a code-only, architecture-only, or security-only review.
 ---
 
 # Review a change the MiKode way
@@ -83,7 +83,10 @@ After discovery, revisit each candidate independently of its initial wording:
 1. Re-open the implicated implementation, contract, and consumers. Trace the concrete
    failure or consequence; check existing mitigations and documented trade-offs.
 2. Compare base and reviewed behavior. Mark introduced or widened problems `introduced`,
-   unchanged debt `pre_existing`, and unresolvable attribution `unknown`.
+   unchanged debt `pre_existing`, and unresolvable attribution `unknown`. Mark a finding
+   `change` when it is introduced or unknown, or when a pre-existing problem keeps the
+   change from achieving its goal or an acceptance criterion; mark any other pre-existing
+   finding `incidental`.
 3. Reject contradicted or unsupported suspicions. Keep intent questions and optional
    preferences separate from defects. Material analysis that cannot be completed becomes
    a limitation, not an invented finding or a silent pass.
@@ -94,37 +97,54 @@ After discovery, revisit each candidate independently of its initial wording:
    [evidence rules](../mikode-code-philosophy-review/SKILL.md#evidence-and-questions),
    together with the domain calibration of any specialist loaded for the finding, such as
    the security skill's joint judgment of impact, reach, and exploitability. Specialist
-   severities are provisional, not votes. If no trusted rubric can be read, preserve
-   evidence without classification and return `incomplete`.
+   severities are provisional, not votes. A defect that keeps the change from meeting an
+   explicit acceptance criterion, introduced or not, is at least `SHOULD FIX`. If no trusted
+   rubric can be read, preserve evidence without classification and return `incomplete`.
 
-Only confirmed, introduced `BLOCKER` or `SHOULD FIX` findings block. Preserve real severity
-for pre-existing findings but mark them non-blocking and identify follow-up work. Do not
-relabel old severe defects as suggestions just to keep the change non-blocking. Unknown
-attribution of a potentially blocking defect leaves the review incomplete.
+Only a `BLOCKER` blocks, wherever it is and whoever introduced it: the harm it describes
+does not depend on the diff. `SHOULD FIX` and `SUGGESTION` findings never block. The
+caller brings `change` findings to the author on their lines and lists `incidental` ones for
+a maintainer to triage. Keep every finding's real severity.
 
-Report a confirmed defect found in code the review actually read, even outside the diff:
-`pre_existing` when the change leaves it untouched, `introduced` when the change reaches or
-widens it. Apply the same evidence bar as any other finding and recommend separate
-follow-up work instead of asking this change to fix it. Never drop a confirmed defect as out
-of scope, and do not expand reading solely to search for unrelated defects.
+Report a confirmed defect found in code the review actually read, even outside the diff,
+with the same evidence bar as any other finding. Never drop it as out of scope, and do not
+expand reading solely to search for unrelated defects. The review states what fails; a
+maintainer decides which incidental findings are worth separate work.
 
 Do not repeat formatter, linter, compiler, scanner, or test output without added reasoning.
 An already reported failure may support a finding, but is not a second finding by itself.
 Record evidence as inspected, caller-reported, or actually executed; do not claim a test ran
 because its code exists or a PR says CI is green.
 
+## Write for a reader who has the diff open
+
+A finding is read next to the code it concerns, by someone who can already see that code.
+Write only what that reader cannot see, following the
+[documentation writing standard](https://github.com/Mikode13/engineering/blob/main/standards/documentation-writing.md):
+
+- `title`: the defect as a short statement, not a category.
+- `problem`: one or two sentences that name the code involved and what is wrong with it.
+- `consequence`: one sentence on what goes wrong, and for whom or when.
+- `recommended_direction`: one sentence on what to change, without writing the patch.
+
+Do not restate the title, quote the diff, narrate how the defect was found, or hedge. Keep
+supporting detail in `evidence`. Perspective and verification reasons follow the same rule,
+one or two sentences each. A short review of a small change is complete, not thin.
+
 ## Return a verified result
 
 Apply the contract's aggregation rules: unresolved material review work takes precedence
 as `incomplete`, retaining confirmed findings; otherwise use `blocked` if any finding
-blocks, or `clean`. Clean describes this review of this change, not the whole repository.
-Keep all five perspective results visible even when there are no findings.
+blocks, `changes_requested` if a `change` finding is `SHOULD FIX`, or `clean`. Clean
+describes this review of this change, not the whole repository. Keep all five perspective
+results visible even when there are no findings.
 
 In interactive use, show confirmed findings first with the shared reviewer format, origin,
-blocking status, evidence, and recommended direction. Then show the five perspectives,
-aggregate outcome, open questions, and limitations. For automation, return the contract's
-JSON object without surrounding prose. Validate field types, references, and semantic
-invariants before returning it. Invalid or missing output is `incomplete`, never clean.
+relevance, blocking status, evidence, and recommended direction. Then show the five
+perspectives, aggregate outcome, open questions, and limitations. For automation, return the
+contract's JSON object without surrounding prose. Validate field types, references, and
+semantic invariants before returning it. Invalid or missing output is `incomplete`, never
+clean.
 
 Do not silently truncate to fit a budget. Missing required context, incomplete diff access,
 unverified critical analysis, interrupted execution, or an obsolete reviewed snapshot

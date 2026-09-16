@@ -45,22 +45,26 @@ dominate the review.
 
 ## Finding severity
 
-- **BLOCKER** — the change should not be accepted as-is: incorrect behaviour,
-  broken public contract, a severe security risk, data corruption risk,
-  missing critical error handling, important regression, a boundary
-  violation that creates significant coupling, or a test suite giving false
-  confidence for critical behaviour.
-- **SHOULD FIX** — meaningful design or maintainability problems to resolve
-  before the change is complete: avoidable technical debt, infrastructure
-  leaking into domain code, unnecessary public API exposure or dependency,
-  weak tests for important behaviour, hard-to-reason-about mutation, scope
-  expansion that should be separated, artificial abstraction or indirection,
+Severity measures the harm a defect does once merged, not where it was found or who
+introduced it.
+
+- **BLOCKER** — merging it would cause serious harm beyond wrong behaviour: an
+  exploitable security weakness such as injection, broken authentication or
+  authorization, exposed secrets, unsafe execution of untrusted input, or a
+  compromised dependency or build; loss or corruption of data; or a defect that
+  can cause financial loss. A bug whose worst effect is incorrect or missing
+  behaviour is not a BLOCKER.
+- **SHOULD FIX** — something is broken and has to be fixed: incorrect behaviour,
+  a regression, a broken public contract, missing error handling that produces
+  wrong results, a test that gives false confidence in the behaviour it claims,
   or a material security weakness of lesser impact, reach, or ease of
   exploitation.
-- **SUGGESTION** — valuable but not required: better naming, small
-  simplification, clearer signature, follow-up refactor outside the scope.
+- **SUGGESTION** — nothing is broken, but the code would be better or easier to
+  change: naming, simplification, a clearer signature, reduced coupling,
+  avoidable technical debt, or a refactor that helps future work.
 
-Do not inflate severity merely to make the review appear more useful.
+Do not inflate severity to make the review appear more useful, and do not lower it
+to let a change through.
 
 ## Evidence and questions
 
