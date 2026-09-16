@@ -69,7 +69,7 @@ future validator must check the [contract](contract.md), not trust an asserted o
 | `clean` with a blocking finding, a `change` finding, a material limitation, or an unresolved candidate                | Invalid result; caller treats execution as `incomplete`.                           |
 | Wrong base/head, changed working tree, truncated diff, or budget exhaustion                                           | `incomplete`; do not attach the result to a newer change.                          |
 | Earlier finding without exactly one recheck, a recheck for an unknown key, or a `present` one without a final finding | Invalid result; caller treats execution as `incomplete`.                           |
-| Duplicate keys in `earlier_findings`                                                                                  | Invalid input; caller rejects it as `incomplete` instead of collapsing findings.   |
+| Duplicate keys after caller normalization                                                                             | Invalid input; deduplicate copies before normalization, but reject key collisions. |
 | Earlier `BLOCKER` rechecked as `undetermined`                                                                         | Limitation required; `incomplete`.                                                 |
 | Earlier finding with null severity rechecked as `undetermined`                                                        | Limitation required; `incomplete`.                                                 |
 | No output or invalid JSON after interruption                                                                          | Caller records `incomplete`; absence is not evidence of success.                   |

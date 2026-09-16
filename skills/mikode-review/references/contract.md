@@ -39,10 +39,11 @@ blocking on every absent plan.
 
 `earlier_findings` holds the findings that earlier reviews of the same change reported, as
 those reviews wrote them, each under a `key` the caller keeps stable from one review to the
-next. Keys must be unique within the input; a caller must reject duplicate keys rather than
-discard or merge either finding. It is empty for a first review. Supply only what the earlier
-review wrote: whether a person resolved or dismissed a finding, and any reply to it, is not
-evidence about the code.
+next. Keys must be unique within the normalized input, and two different findings must never
+share one. The caller decides how to deduplicate repeated copies of the same finding before
+normalization. It is empty for a first review. Supply only what the earlier review wrote:
+whether a person resolved or dismissed a finding, and any reply to it, is not evidence about
+the code.
 
 Scope names the exact comparison: immutable revisions, or an identifiable base and a
 captured working-tree snapshot including untracked files in scope. Empty `paths` means the
@@ -139,8 +140,8 @@ head and points to the final finding that describes it now, with its current loc
 severity; several earlier findings may point to the same one. `fixed` and `undetermined`
 use null. The reason, in one sentence, names what still causes the defect, what removed it,
 or what is needed to decide. A final finding that describes an earlier finding's defect is
-linked through that recheck, not reported as unrelated. An undetermined earlier `BLOCKER`
-or finding whose earlier severity is null is material and requires a limitation.
+linked through that recheck, not reported as unrelated. An undetermined earlier finding
+whose severity is `BLOCKER` or null is material and requires a limitation.
 
 Every `Question` contains `question: string`, `perspective: one perspective key`, and
 `prevents_completion: boolean`. If true, add a matching limitation. Questions carry no
