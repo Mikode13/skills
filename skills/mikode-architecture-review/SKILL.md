@@ -40,10 +40,12 @@ Use the document for responsibilities, boundaries, dependency direction, public 
 and accepted trade-offs. Follow only links relevant to the selected scope.
 
 If no architecture document exists, infer boundaries from code, public exports, consumers,
-and relevant local decisions; label those inferences. Absence alone is not a finding or an
-incomplete review. Conflicting documents, unavailable dependencies, or unknown intent that
-prevent a material conclusion are limitations; preserve supported findings and identify
-what is needed to complete the review.
+and relevant local decisions; label those inferences, and continue the review rather than
+returning it incomplete. Whether the absence is itself a finding, and at what severity,
+follows the applicable documentation policy for that repository, exactly as a missing
+decision record does; do not settle it from this skill. Conflicting documents, unavailable
+dependencies, or unknown intent that prevent a material conclusion are limitations;
+preserve supported findings and identify what is needed to complete the review.
 
 Compare documentation with code. In change reviews, use baseline architecture as the
 starting point and review proposed documentation changes alongside their implementation
@@ -54,7 +56,7 @@ violation of the old design.
 Reuse context already supplied by the caller. When applicable MiKode policy needs lookup,
 use the installed `mikode-context` skill; otherwise read the relevant Active standards from
 the latest `main` of `Mikode13/engineering`. Read ADRs only when their reasoning matters.
-Do not copy policy into the review or infer a new requirement to create architecture files.
+Do not copy policy into the review or require architecture files that policy does not name.
 
 ## Evaluate the affected design
 
